@@ -5,7 +5,6 @@ use App\Http\Controllers\LikeController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\postController;
-use App\Http\Controllers\MainPageController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
