@@ -16,15 +16,17 @@ class LikeController extends Controller
             ->first();
 
         if ($like) {
+
             if ($like->trashed()) {
-                // Daha önce silinmiş -> geri getir (tekrar beğenme)
                 $like->restore();
-            } else {
-                // Aktif -> sil (beğeniyi kaldır)
+            }
+            else {
                 $like->delete();
             }
-        } else {
-            // Hiç yok -> yeni oluştur
+
+        }
+
+        else {
             Like::create([
                 'user_id' => Auth::id(),
                 'post_id' => $id,
@@ -33,9 +35,5 @@ class LikeController extends Controller
 
         return redirect()->back();
     }
-
-
-
-
 
 }

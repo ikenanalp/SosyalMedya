@@ -17,7 +17,7 @@ class CommentController extends Controller
         $comment->comment = $request->comment;
         $comment->save();
 
-        return redirect()->route('panel.user.showMainPage') ->with('success', 'Yorumunuz eklendi.');
+        return redirect()->back()->with('success', 'Yorumunuz eklendi.');
     }
 
     public function deleteComment($id){
@@ -25,13 +25,13 @@ class CommentController extends Controller
     $comment = Comment::findOrFail($id);
 
     if($comment->user_id !== Auth::id()){
-        return redirect()->route('panel.user.showMainPage')->with('error', 'Bu yorumunu silemezsiniz.');
+        return redirect()->back()->with('error', 'Bu yorumunu silemezsiniz.');
     }
 
 
     $comment->delete();
 
-    return redirect()->route('panel.user.showMainPage')->with('success', 'Yorumunuz silindi.');
+    return redirect()->back()->with('success', 'Yorumunuz silindi.');
 
     }
 
