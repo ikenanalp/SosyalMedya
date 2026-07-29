@@ -29,6 +29,7 @@ Post Oluştur
                     </div>
                 @endif
 
+
                 <form action="{{ route('panel.user.createPost') }}" method="POST">
                     @csrf
 

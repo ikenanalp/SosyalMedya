@@ -33,7 +33,6 @@ class PostController extends Controller
         }
 
 
-
     public function showProfilePage(){
 
         $user = Auth::user();
@@ -56,14 +55,12 @@ class PostController extends Controller
 
         $post = Post::with('user') ->latest()->paginate(20);
 
-
-
         return view('panel.userpages.mainpage', compact('post'));
     }
 
     public function showMyFollowingPage()
     {
-        // Takip edilen kullanıcıların id'lerini al
+
         $followingIds = Follower::where('follower_id', Auth::id())
             ->pluck('following_id');
 
@@ -72,7 +69,7 @@ class PostController extends Controller
             ->latest()
             ->paginate(10);
 
-        return view('panel.userpages.myfollowingsend', compact('post'));  // Takip edilen kullanıcıların id'lerini al
+        return view('panel.userpages.myfollowingsend', compact('post'));
 
 
     }
