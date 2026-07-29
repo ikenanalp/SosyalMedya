@@ -63,6 +63,7 @@
                         <li><a href="{{route('panel.user.showFindUserPage')}}"> Kullanıcı Ara </a></li>
                         <li><a href="{{route('panel.user.showCreatePost')}}">Gönderi Oluştur </a></li>
                         <li><a href="{{route('panel.user.showProfilePage')}}">Profil </a></li>
+                        <li><a href="{{route('panel.user.showMySettingPage')}}">Ayarlar </a></li>
                         <li><form method="POST" action="{{ route('logout') }}">
                                 @csrf
                                 <button type="submit" class="btn btn-outline-danger btn-sm">

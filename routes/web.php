@@ -4,7 +4,8 @@ use App\Http\Controllers\FollowerController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\postController;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -27,6 +28,7 @@ Route::get('/createpost',[PostController::class,'showCreatePostPage'])->name('pa
 Route::get('/finduser',[UserController::class,'showFindUserPage'])->name('panel.user.showFindUserPage');
 Route::get('/profile/{user}',[UserController::class,'userProfilePage'])->name('panel.user.showProfile');
 Route::get('/myfollowingpage',[PostController::class,'showMyFollowingPage'])->name('panel.user.showMyFollowingPage');
+Route::get('/setting',[\App\Http\Controllers\ProfileController::class,'showMySettingPage'])->name('panel.user.showMySettingPage');
 
 //
 
@@ -60,5 +62,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/togglefollow/{id}', [FollowerController::class, 'toggleFollow'])
         ->name('user.toggleFollow');
 });
+
+//
+
+
+//
+
 
 //
