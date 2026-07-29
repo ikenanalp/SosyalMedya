@@ -23,7 +23,7 @@ Route::middleware([
 
 Route::get('/mainpage',[PostController::class,'showMainPage'])->name('panel.user.showMainPage');
 Route::get('/profile',[PostController::class,'showProfilePage'])->name('panel.user.showProfilePage');
-Route::get('/createpost',[PostController::class,'showCreatePostPage'])->name('panel.user.showCreatePost'); //buna controller oluştur ve değiştir daha temiz olabilir
+Route::get('/createpost',[PostController::class,'showCreatePostPage'])->name('panel.user.showCreatePost');
 Route::get('/finduser',[UserController::class,'showFindUserPage'])->name('panel.user.showFindUserPage');
 Route::get('/profile/{user}',[UserController::class,'userProfilePage'])->name('panel.user.showProfile');
 Route::get('/myfollowingpage',[PostController::class,'showMyFollowingPage'])->name('panel.user.showMyFollowingPage');
