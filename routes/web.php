@@ -19,7 +19,7 @@ Route::middleware([
     Route::get('/dashboard',[PostController::class,'showMainPage'])->name('profile');
 });
 
-// Sayfa Yönlendirme Rootları Başlangıç
+// Sayfa Yönlendirme Rootları
 
 Route::get('/mainpage',[PostController::class,'showMainPage'])->name('panel.user.showMainPage');
 Route::get('/profile',[PostController::class,'showProfilePage'])->name('panel.user.showProfilePage');
