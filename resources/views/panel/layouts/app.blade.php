@@ -52,7 +52,7 @@
                 <nav class="main-nav">
                     <!-- ***** Logo Start ***** -->
                     <a href="index.html" class="logo">
-                        <img src="{{asset('panel/assets/images/logo.png')}}" alt="">
+                        <img src="" alt="">
                     </a>
                     <!-- ***** Logo End ***** -->
 
