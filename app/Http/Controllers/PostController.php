@@ -46,10 +46,10 @@ class PostController extends Controller
     }
 
 
-
     public function showCreatePostPage(){
         return view('panel.userpages.createpost');
     }
+
 
     public function showMainPage(){
 
@@ -58,9 +58,9 @@ class PostController extends Controller
         return view('panel.userpages.mainpage', compact('post'));
     }
 
+
     public function showMyFollowingPage()
     {
-
         $followingIds = Follower::where('follower_id', Auth::id())
             ->pluck('following_id');
 
@@ -70,8 +70,7 @@ class PostController extends Controller
             ->paginate(10);
 
         return view('panel.userpages.myfollowingsend', compact('post'));
-
-
     }
+
 
 }
