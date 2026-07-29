@@ -51,7 +51,7 @@
             <div class="col-12">
                 <nav class="main-nav">
                     <!-- ***** Logo Start ***** -->
-                    <a href="index.html" class="logo">
+                    <a href="" class="logo">
                         <img src="" alt="">
                     </a>
                     <!-- ***** Logo End ***** -->
@@ -63,7 +63,6 @@
                         <li><a href="{{route('panel.user.showFindUserPage')}}"> Kullanıcı Ara </a></li>
                         <li><a href="{{route('panel.user.showCreatePost')}}">Gönderi Oluştur </a></li>
                         <li><a href="{{route('panel.user.showProfilePage')}}">Profil </a></li>
-                        <li><a href="{{route('panel.user.showMySettingPage')}}">Ayarlar </a></li>
                         <li><form method="POST" action="{{ route('logout') }}">
                                 @csrf
                                 <button type="submit" class="btn btn-outline-danger btn-sm">
@@ -87,11 +86,11 @@
         <div class="col-lg-12">
             <div class="page-content">
 
-                <!-- ***** Gaming Library Start ***** -->
+                <!-- ***** Content Start ***** -->
 
                 @yield('content')
 
-                <!-- ***** Gaming Library End ***** -->
+                <!-- ***** Content  End ***** -->
             </div>
         </div>
     </div>
