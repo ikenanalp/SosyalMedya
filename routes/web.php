@@ -28,16 +28,16 @@ Route::get('/finduser',[UserController::class,'showFindUserPage'])->name('panel.
 Route::get('/profile/{user}',[UserController::class,'userProfilePage'])->name('panel.user.showProfile');
 Route::get('/myfollowingpage',[PostController::class,'showMyFollowingPage'])->name('panel.user.showMyFollowingPage');
 
+//
 
-// Sayfa Yönlendirme Rootları Bitiş
 
-// Post Oluşturma ve Silme Root
+// Post Oluşturma ve Silme
 
 Route::post('/createpost',[postController::class,'createPost'])->name('panel.user.createPost');
-
 Route::delete('/deletepost/{id}',[postController::class,'deletePost'])->name('panel.user.deletePost');
 
 //
+
 
 // Yorum Ekleme Ve Silme
 
@@ -46,11 +46,13 @@ Route::delete('/deletecomment/{id}',[CommentController::class,'deleteComment'])-
 
 //
 
+
 //Like Sistemi
 
 Route::post('/userlike/{id}', [LikeController::class, 'userLike'])->name('user.likeSystem');
 
 //
+
 
 //Follow Sistemi
 
