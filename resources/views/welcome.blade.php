@@ -174,13 +174,6 @@
             Sosyal Medya, seni doğru insanlara bağlamak için burada.
         </p>
 
-        <div class="d-flex flex-wrap justify-content-center gap-3 mb-5">
-            @if (Route::has('register') && !Auth::check())
-                <a href="{{ route('register') }}" class="btn btn-accent cta-btn">Ücretsiz katıl</a>
-                <a href="{{ route('login') }}" class="btn btn-outline-light cta-btn">Hesabım var</a>
-            @elseif (Auth::check())
-                <a href="{{ url('/dashboard') }}" class="btn btn-accent cta-btn">Sayfana dön</a>
-            @endif
         </div>
 
     </div>
