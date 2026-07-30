@@ -19,11 +19,18 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->boolean('is_banned')->default(false);
+            $table->string('ban_reason');
+            $table->unsignedBigInteger('banned_by')->nullable();
+            $table->dateTime('banned_at')->nullable();
             $table->rememberToken();
             $table->foreignId('current_team_id')->nullable();
             $table->string('profile_photo_path', 2048)->nullable();
             $table->softDeletes();
             $table->timestamps();
+
+
+            $table->foreign('banned_by')->references('id')->on('users');
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
