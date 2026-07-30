@@ -30,7 +30,7 @@ return new class extends Migration
             $table->timestamps();
 
 
-            $table->foreign('banned_by')->references('id')->on('users');
+            $table->foreign('banned_by')->references('id')->on('users')->onDelete('set null');
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

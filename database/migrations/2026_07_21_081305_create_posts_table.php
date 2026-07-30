@@ -15,14 +15,14 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->string('content');
-            $table->TinyInteger('status')->default(0)->comment('0-Beklemede, 1-Gönderildi , 2-Reddedildi');
+            $table->tinyInteger('status')->default(0)->comment('0-Beklemede, 1-Gönderildi , 2-Reddedildi');
             $table->unsignedBigInteger('approved_by')->nullable();
             $table->dateTime('approved_at')->nullable();
             $table->softDeletes();
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('approved_by')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('approved_by')->references('id')->on('users')->onDelete('set null');
         });
     }
 
