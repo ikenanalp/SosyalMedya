@@ -17,7 +17,7 @@ Route::middleware([
     'verified',
 ])->group(function () {
 
-    Route::get('/dashboard',[PostController::class,'showMainPage'])->name('profile');
+    Route::get('/dashboard',[PostController::class,'showMainPage'])->name('profile'); });
 
 // Sayfa Yönlendirme Rootları
 
@@ -55,4 +55,4 @@ Route::post('/userlike/{id}', [LikeController::class, 'userLike'])->name('user.l
 Route::post('/togglefollow/{id}', [FollowerController::class, 'toggleFollow'])->name('user.toggleFollow');
 
 //
-});
+
