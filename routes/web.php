@@ -5,6 +5,7 @@ use App\Http\Controllers\LikeController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PostController;
+use \App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -56,3 +57,8 @@ Route::post('/togglefollow/{id}', [FollowerController::class, 'toggleFollow'])->
 
 //
 
+//Admin dashboard
+
+Route::get('/admin/dashboard',[DashboardController::class,'showAdminDashboard'])->name('admin.panel');
+
+//
