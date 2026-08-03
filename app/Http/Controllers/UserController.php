@@ -25,7 +25,7 @@ class UserController extends Controller
 
     public function userProfilePage(User $user)
     {
-        $posts = $user->posts()->latest()->paginate(10);
+        $posts = $user->posts()->approved()->latest()->paginate(10);
 
 
         return view('panel.userpages.showprofilepage', compact('user', 'posts'));

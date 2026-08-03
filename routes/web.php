@@ -63,3 +63,12 @@ Route::post('/togglefollow/{id}', [FollowerController::class, 'toggleFollow'])->
 Route::get('/admin/dashboard',[DashboardController::class,'showAdminDashboard'])->name('admin.dashboard');
 
 //
+
+// Post Onay Sistemi
+
+Route::get('/posts/pending',[DashboardController::class,'showPendingPosts'])->name('posts.pending');
+Route::post('/posts/{post}/approve', [DashboardController::class, 'showApprovedPosts'])->name('posts.approve');
+Route::post('/posts/{post}/reject', [DashboardController::class, 'showRejectedPosts'])->name('posts.reject');
+
+
+//

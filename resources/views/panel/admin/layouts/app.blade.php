@@ -109,9 +109,9 @@
         <nav>
             <a class="nav-item active" href="{{route('admin.dashboard')}}">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
-                Genel Bakış
+                Ana Sayfa
             </a>
-            <a class="nav-item" href="#">
+            <a class="nav-item" href="{{route('posts.pending')}}">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="7" r="3.2"/><path d="M2.5 20c0-3.6 2.9-6.4 6.5-6.4s6.5 2.8 6.5 6.4"/><circle cx="17.5" cy="7.5" r="2.5"/><path d="M15 13.6c2.8.3 5 2.7 5 5.9"/></svg>
                 Post Onay
             </a>
@@ -139,7 +139,7 @@
         <div class="sidebar-foot">
             <div class="avatar">EA</div>
             <div>
-                <div class="foot-name"> {{strtoupper(substr($user->username,0,1)).substr($user->username,1)}}</div>
+                <div class="foot-name"> </div>
                 <div class="foot-role">Sistem Yöneticisi</div>
             </div>
         </div>

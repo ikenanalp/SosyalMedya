@@ -37,7 +37,7 @@ class PostController extends Controller
 
         $user = Auth::user();
 
-        $post = $user->posts()->latest()->paginate(10);
+        $post = $user->posts()->approved()->latest()->paginate(10);
 
         $followersCount = \App\Models\Follower::where('following_id', $user->id)->count();
         $followingCount = \App\Models\Follower::where('follower_id', $user->id)->count();
@@ -53,7 +53,7 @@ class PostController extends Controller
 
     public function showMainPage(){
 
-        $post = Post::with('user') ->latest()->paginate(20);
+        $post = Post::approved()->with('user')->latest()->get();
 
         return view('panel.userpages.mainpage', compact('post'));
     }
@@ -66,6 +66,7 @@ class PostController extends Controller
 
         $post = Post::with(['user', 'comments.user', 'likes'])
             ->whereIn('user_id', $followingIds)
+            ->approved()
             ->latest()
             ->paginate(10);
 
