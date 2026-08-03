@@ -139,7 +139,7 @@
         <div class="sidebar-foot">
             <div class="avatar">EA</div>
             <div>
-                <div class="foot-name"></div>
+                <div class="foot-name"> {{strtoupper(substr($user->username,0,1)).substr($user->username,1)}}</div>
                 <div class="foot-role">Sistem Yöneticisi</div>
             </div>
         </div>
