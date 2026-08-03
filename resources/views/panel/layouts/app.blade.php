@@ -63,6 +63,14 @@
                         <li><a href="{{route('panel.user.showFindUserPage')}}"> Kullanıcı Ara </a></li>
                         <li><a href="{{route('panel.user.showCreatePost')}}">Gönderi Oluştur </a></li>
                         <li><a href="{{route('panel.user.showProfilePage')}}">Profil </a></li>
+                        <li>
+                            @if(auth()->check() && auth()->user()->role == 1)
+                                <a href="{{ route('admin.dashboard') }}"
+                                   class="inline-flex items-center rounded bg-cyan text-white text-sm">
+                                    Admin paneline git
+                                </a>
+                            @endif
+                        </li>
                         <li><form method="POST" action="{{ route('logout') }}">
                                 @csrf
                                 <button type="submit" class="btn btn-outline-danger btn-sm">

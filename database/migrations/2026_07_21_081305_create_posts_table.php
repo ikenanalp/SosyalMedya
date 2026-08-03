@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->string('content');
-            $table->tinyInteger('status')->default(0)->comment('0-Beklemede, 1-Gönderildi , 2-Reddedildi');
+            $table->unsignedTinyInteger('status')->default(0)->comment('0-Beklemede, 1-Onaylandı , 2-Reddedildi');
             $table->unsignedBigInteger('approved_by')->nullable();
-            $table->dateTime('approved_at')->nullable();
+            $table->timestamp('approved_at')->nullable();
             $table->softDeletes();
             $table->timestamps();
 

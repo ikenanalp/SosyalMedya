@@ -18,7 +18,8 @@ Route::middleware([
     'verified',
 ])->group(function () {
 
-    Route::get('/dashboard',[PostController::class,'showMainPage'])->name('profile'); });
+    Route::get('/dashboard',[PostController::class,'showMainPage'])->name('profile');
+});
 
 // Sayfa Yönlendirme Rootları
 
@@ -59,6 +60,6 @@ Route::post('/togglefollow/{id}', [FollowerController::class, 'toggleFollow'])->
 
 //Admin dashboard
 
-Route::get('/admin/dashboard',[DashboardController::class,'showAdminDashboard'])->name('admin.panel');
+Route::get('/admin/dashboard',[DashboardController::class,'showAdminDashboard'])->name('admin.dashboard');
 
 //
