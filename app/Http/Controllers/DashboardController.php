@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
+    //Kullanıcı adı gönderme
     public function showAdminDashboard()
     {
         $user = Auth::user();
@@ -15,4 +16,8 @@ class DashboardController extends Controller
 
         return view('panel.admin.pages.adminmainpage',compact('user'));
     }
+
+    //
+
+
 }

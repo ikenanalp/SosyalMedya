@@ -17,10 +17,12 @@ class User extends Authenticatable
 
     /** @use HasFactory<UserFactory> */
     use HasFactory;
-
     use HasProfilePhoto;
     use Notifiable;
     use TwoFactorAuthenticatable;
+
+    const ROLE_USER  = 0;
+    const ROLE_ADMIN = 1;
 
     /**
      * The attributes that are mass assignable.
@@ -32,6 +34,7 @@ class User extends Authenticatable
         'username',
         'email',
         'password',
+        'role',
     ];
 
     /**
@@ -67,6 +70,12 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'banned_at'          => 'datetime',
+        'is_banned'          => 'boolean',
+    ];
 
 
     // Kullanıcının gönderileri
@@ -108,5 +117,19 @@ class User extends Authenticatable
             'follower_id'
         )->withTimestamps();
     }
+
+    // Claude Sistemi
+
+    public function isAdmin(): bool
+    {
+        return $this->role == self::ROLE_ADMIN;
+    }
+
+    public function bannedBy()
+    {
+        return $this->belongsTo(User::class, 'banned_by');
+    }
+
+
 
 }

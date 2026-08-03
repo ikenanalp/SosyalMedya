@@ -10,6 +10,22 @@ class Post extends Model
 {
     use HasFactory,softDeletes;
 
+    const STATUS_PENDING  = 0;
+    const STATUS_APPROVED = 1;
+    const STATUS_REJECTED = 2;
+
+    protected $fillable = [
+        'user_id',
+        'content',
+        'status',
+        'approved_by',
+        'approved_at',
+    ];
+
+    protected $casts = [
+        'approved_at' => 'datetime',
+    ];
+
     protected $table = 'posts';
 
     public function likes(){
@@ -24,5 +40,26 @@ class Post extends Model
         return $this->belongsTo(User::class,'user_id','id');
     }
 
+    public function approver(){
+        return $this->belongsTo(User::class,'approved_by','id');
+    }
+
+
+// Sadece onaylanmis postlari getirir (ana feed icin)
+    public function scopeApproved($query)
+    {
+        return $query->where('status', self::STATUS_APPROVED);
+    }
+
+    // Admin panelinde bekleyen postlari listelemek icin
+    public function scopePending($query)
+    {
+        return $query->where('status', self::STATUS_PENDING);
+    }
+
+    public function scopeRejected($query)
+    {
+        return $query->where('status', self::STATUS_REJECTED);
+    }
 }
 
