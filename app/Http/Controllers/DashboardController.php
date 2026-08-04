@@ -11,10 +11,16 @@ class DashboardController extends Controller
 {
     public function showAdminDashboard()
     {
-        $user = Auth::user();
+        $stats = [
+            'total_posts'    => Post::count(),
+            'approved_posts' => Post::approved()->count(),
+            'rejected_posts' => Post::rejected()->count(),
+            'pending_posts'  => Post::pending()->count(),
+            'total_users'    => User::count(),
+            'banned_users'   => User::where('is_banned', true)->count(),
+        ];
 
-
-        return view('panel.admin.pages.adminmainpage', compact('user'));
+        return view('panel.admin.pages.adminmainpage', compact('stats'));
     }
 
 

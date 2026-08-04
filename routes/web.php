@@ -17,7 +17,7 @@ Route::get('/', function () {
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
-    'verified',
+    'verified','banned'
 ])->group(function () {
 
     Route::get('/dashboard', [PostController::class, 'showMainPage'])->name('profile');
