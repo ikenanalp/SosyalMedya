@@ -18,7 +18,7 @@ class DashboardController extends Controller
     }
 
 
-    public function showPendingPosts()
+    public function pendingPosts()
     {
         $posts = Post::pending()->with('user')->latest()->paginate(20);
 
@@ -27,7 +27,7 @@ class DashboardController extends Controller
 
     // Post onaylama ve yayınlama
 
-    public function showApprovedPosts(Request $request,Post $post)
+    public function approvedPosts(Request $request,Post $post)
     {
         $post->update([
             'status'      => Post::STATUS_APPROVED,
@@ -38,7 +38,7 @@ class DashboardController extends Controller
         return back()->with('success', 'Post onaylandi ve yayinlandi.');
     }
 
-    public function showRejectedPosts(Request $request,Post $post)
+    public function rejectedPosts(Request $request,Post $post)
     {
         $request->validate([
             'reject_reason' => 'nullable|string|max:500',
@@ -52,6 +52,25 @@ class DashboardController extends Controller
 
         return back()->with('success', 'Post reddedildi.');
 
+    }
+
+    public function showRejectedPosts()
+    {
+
+        $posts = Post::rejected()->with(['user', 'approver'])->latest()->paginate(20);
+
+        return view('panel.admin.pages.rejectedposts', compact('posts'));
+
+    }
+
+    public function showApprovedPosts()
+    {
+        $posts = Post::approved()
+            ->with('user')
+            ->latest()
+            ->paginate(20);
+
+        return view('panel.admin.pages.approvedposts', compact('posts'));
     }
 
 }

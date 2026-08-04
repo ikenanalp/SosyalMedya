@@ -5,39 +5,68 @@
 @endsection
 
 @section('content')
-    <div class="max-w-2xl mx-auto py-8">
-        <h1 class="text-xl font-semibold mb-6 ">Post Onaylama Sayfası </h1>
+    <div class="container mt-4">
 
-        @if(session('success'))
-            <div class="bg-green-100 text-green-800 px-4 py-2 rounded mb-4 text-sm">
-                {{ session('success') }}
-            </div>
-        @endif
+        <h3 class="mb-4">Onay Bekleyen Paylaşımlar</h3>
 
         @forelse($posts as $post)
-            <div class="border p-4 rounded mb-3">
-                <p class="text-sm text-gray-500">{{ $post->user->username }}</p>
-                <p class="mt-1">{{ $post->content }}</p>
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-body">
 
-                <div class="flex gap-2 mt-3">
-                    <form action="{{ route('posts.approve', $post) }}" method="POST">
-                        @csrf
-                        <button type="submit" class="bg-green-600 text-white px-3 py-1 rounded text-sm">
-                            Onayla
-                        </button>
-                    </form>
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div>
+                            <h5 class="card-title mb-0">
+                                {{ ucfirst($post->user->username) }}
+                            </h5>
+                            <small class="text-muted">
+                                {{ $post->created_at->diffForHumans() }}
+                            </small>
+                        </div>
 
-                    <form action="{{ route('posts.reject', $post) }}" method="POST">
-                        @csrf
-                        <button type="submit" class="bg-red-600 text-white px-3 py-1 rounded text-sm">
-                            Reddet
-                        </button>
-                    </form>
+                        <span class="badge bg-warning text-dark">
+                        Onay Bekliyor
+                    </span>
+                    </div>
+
+                    <p class="card-text">
+                        {{ $post->content }}
+                    </p>
+
+                    <hr>
+
+                    <div class="d-flex gap-2">
+
+                        <form action="{{ route('posts.approve', $post) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="btn btn-success">
+                                <i class="bi bi-check-circle"></i>
+                                Onayla
+                            </button>
+                        </form>
+
+                        <form action="{{ route('posts.reject', $post) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="btn btn-danger">
+                                <i class="bi bi-x-circle"></i>
+                                Reddet
+                            </button>
+                        </form>
+
+                    </div>
+
                 </div>
             </div>
+
         @empty
-            <p class="text-gray-500 text-sm">Onay bekleyen post yok.</p>
+
+            <div class="alert alert-info text-center shadow-sm">
+                <h5 class="mb-1">Onay Bekleyen Post Yok</h5>
+                <p class="mb-0">Şu anda moderasyon bekleyen herhangi bir paylaşım bulunmuyor.</p>
+            </div>
+
         @endforelse
+
+    </div>
 
         {{ $posts->links() }}
     </div>
