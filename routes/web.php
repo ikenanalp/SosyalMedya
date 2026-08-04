@@ -3,6 +3,7 @@
 use App\Http\Controllers\FollowerController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\UserBanController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PostController;
 use \App\Http\Controllers\DashboardController;
@@ -72,4 +73,11 @@ Route::get('/posts/pending',[DashboardController::class,'pendingPosts'])->name('
 Route::post('/posts/{post}/approve', [DashboardController::class, 'approvedPosts'])->name('posts.approve');
 Route::post('/posts/{post}/reject', [DashboardController::class, 'rejectedPosts'])->name('posts.reject');
 
+//
+
+// Kullanıcı Ban Sistemi
+
+Route::get('/users', [UserBanController::class, 'index'])->name('users.index');
+Route::post('/users/{user}/ban', [UserBanController::class, 'banUsers'])->name('users.ban');
+Route::post('/users/{user}/unban', [UserBanController::class, 'unbanUsers'])->name('users.unban');
 //
