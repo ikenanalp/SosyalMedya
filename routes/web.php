@@ -6,7 +6,8 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\UserBanController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PostController;
-use \App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Middleware\admin;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -19,65 +20,73 @@ Route::middleware([
     'verified',
 ])->group(function () {
 
-    Route::get('/dashboard',[PostController::class,'showMainPage'])->name('profile');
-});
+    Route::get('/dashboard', [PostController::class, 'showMainPage'])->name('profile');
+
 
 // Sayfa Yönlendirme Rootları
 
-Route::get('/mainpage',[PostController::class,'showMainPage'])->name('panel.user.showMainPage');
-Route::get('/profile',[PostController::class,'showProfilePage'])->name('panel.user.showProfilePage');
-Route::get('/createpost',[PostController::class,'showCreatePostPage'])->name('panel.user.showCreatePost');
-Route::get('/finduser',[UserController::class,'showFindUserPage'])->name('panel.user.showFindUserPage');
-Route::get('/profile/{user}',[UserController::class,'userProfilePage'])->name('panel.user.showProfile'); //Aranan kullanıcı profili gösterme
-Route::get('/myfollowingpage',[PostController::class,'showMyFollowingPage'])->name('panel.user.showMyFollowingPage');
+    Route::get('/mainpage', [PostController::class, 'showMainPage'])->name('panel.user.showMainPage');
+    Route::get('/profile', [PostController::class, 'showProfilePage'])->name('panel.user.showProfilePage');
+    Route::get('/createpost', [PostController::class, 'showCreatePostPage'])->name('panel.user.showCreatePost');
+    Route::get('/finduser', [UserController::class, 'showFindUserPage'])->name('panel.user.showFindUserPage');
+    Route::get('/profile/{user}', [UserController::class, 'userProfilePage'])->name('panel.user.showProfile'); //Aranan kullanıcı profili gösterme
+    Route::get('/myfollowingpage', [PostController::class, 'showMyFollowingPage'])->name('panel.user.showMyFollowingPage');
 
 //
 
 // Post Oluşturma ve Silme
 
-Route::post('/createpost',[postController::class,'createPost'])->name('panel.user.createPost');
-Route::delete('/deletepost/{id}',[postController::class,'deletePost'])->name('panel.user.deletePost');
+    Route::post('/createpost', [postController::class, 'createPost'])->name('panel.user.createPost');
+    Route::delete('/deletepost/{id}', [postController::class, 'deletePost'])->name('panel.user.deletePost');
 
 //
 
 // Yorum Ekleme Ve Silme
 
-Route::post('/createcomment/{id}',[CommentController::class,'createComment'])->name('user.createComment');
-Route::delete('/deletecomment/{id}',[CommentController::class,'deleteComment'])->name('user.deleteComment');
+    Route::post('/createcomment/{id}', [CommentController::class, 'createComment'])->name('user.createComment');
+    Route::delete('/deletecomment/{id}', [CommentController::class, 'deleteComment'])->name('user.deleteComment');
 
 //
 
 //Like Sistemi
 
-Route::post('/userlike/{id}', [LikeController::class, 'userLike'])->name('user.likeSystem');
+    Route::post('/userlike/{id}', [LikeController::class, 'userLike'])->name('user.likeSystem');
 
 //
 
 //Follow Sistemi
 
-Route::post('/togglefollow/{id}', [FollowerController::class, 'toggleFollow'])->name('user.toggleFollow');
+    Route::post('/togglefollow/{id}', [FollowerController::class, 'toggleFollow'])->name('user.toggleFollow');
 
 //
 
+    Route::middleware([
+        'admin',
+    ])->group(function () {
+
 //Admin dashboard
 
-Route::get('/admin/dashboard',[DashboardController::class,'showAdminDashboard'])->name('admin.dashboard');
-Route::get('/posts/rejected', [DashboardController::class, 'showRejectedPosts'])->name('show.posts.rejected');
-Route::get('/posts/approved', [DashboardController::class, 'showApprovedPosts'])->name('show.posts.approved');
+        Route::get('/admin/dashboard', [DashboardController::class, 'showAdminDashboard'])->name('admin.dashboard');
+        Route::get('/posts/rejected', [DashboardController::class, 'showRejectedPosts'])->name('show.posts.rejected');
+        Route::get('/posts/approved', [DashboardController::class, 'showApprovedPosts'])->name('show.posts.approved');
 
 //
 
 // Post Onay Sistemi
 
-Route::get('/posts/pending',[DashboardController::class,'pendingPosts'])->name('posts.pending');
-Route::post('/posts/{post}/approve', [DashboardController::class, 'approvedPosts'])->name('posts.approve');
-Route::post('/posts/{post}/reject', [DashboardController::class, 'rejectedPosts'])->name('posts.reject');
+        Route::get('/posts/pending', [DashboardController::class, 'pendingPosts'])->name('posts.pending');
+        Route::post('/posts/{post}/approve', [DashboardController::class, 'approvedPosts'])->name('posts.approve');
+        Route::post('/posts/{post}/reject', [DashboardController::class, 'rejectedPosts'])->name('posts.reject');
 
 //
 
 // Kullanıcı Ban Sistemi
 
-Route::get('/users', [UserBanController::class, 'index'])->name('users.index');
-Route::post('/users/{user}/ban', [UserBanController::class, 'banUsers'])->name('users.ban');
-Route::post('/users/{user}/unban', [UserBanController::class, 'unbanUsers'])->name('users.unban');
+        Route::get('/users', [UserBanController::class, 'index'])->name('users.index');
+        Route::post('/users/{user}/ban', [UserBanController::class, 'banUsers'])->name('users.ban');
+        Route::post('/users/{user}/unban', [UserBanController::class, 'unbanUsers'])->name('users.unban');
 //
+
+    });
+
+});
