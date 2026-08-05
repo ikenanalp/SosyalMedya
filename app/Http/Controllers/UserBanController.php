@@ -18,6 +18,10 @@ class UserBanController extends Controller
     // Kullaniciyi banlar
     public function banUsers(Request $request, User $user)
     {
+        if ($user->id === auth()->id()) {
+            return back()->with('error', 'Kendi hesabınızı banlayamazsınız.');
+        }
+
         $request->validate([
             'ban_reason' => 'nullable|string|max:255',
         ]);
