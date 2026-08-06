@@ -3,33 +3,82 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\PostImage;
 use App\Models\Follower;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
     public function createPost(Request $request)
     {
-        $request->validate([
-            'content'=>'required|min:3|max:250',
+        $validator = Validator::make($request->all(), [
+            'content' => 'nullable|min:3|max:250',
+            'images' => 'nullable|array|max:5',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:4096',
+        ], [
+            'content.min' => 'İçerik en az 3 karakter olmalıdır.',
+            'content.max' => 'İçerik en fazla 250 karakter olabilir.',
+
+            'images.array' => 'Resimler geçersiz.',
+            'images.max' => 'En fazla 5 resim yükleyebilirsiniz.',
+            'images.*.image' => 'Yalnızca resim dosyası yükleyebilirsiniz.',
+            'images.*.mimes' => 'İzin verilen formatlar: jpeg, png, jpg, gif.',
+            'images.*.max' => 'Her resim en fazla 4 MB olabilir.',
         ]);
 
+        $validator->after(function ($validator) use ($request) {
+
+            if (!$request->filled('content') && !$request->hasFile('images')) {
+                $validator->errors()->add('content', 'İçerik veya en az bir resim eklemelisiniz.');
+            }
+
+            if ($request->hasFile('images') && !$request->filled('content')) {
+                $validator->errors()->add('content', 'Resim yüklediğinizde içerik girmek zorundasınız.');
+            }
+        });
+
+        $validator->validate();
+
         $post = new Post();
-        $post->user_id = Auth::id() ;
+        $post->user_id = Auth::id();
         $post->content = $request->content;
+        $post->status = 0;
         $post->save();
+
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $index => $image) {
+                $path = $image->store('posts', 'public');
+
+                PostImage::create([
+                    'post_id' => $post->id,
+                    'image_url' => $path,
+                    'position' => $index,
+                ]);
+            }
+        }
 
         return redirect()->route('panel.user.showCreatePost')->with(['success'=>'Paylaşımınız başarıyla eklendi']);
         }
 
         public function deletePost($id){
 
-        $kategori = Post::find($id);
-        $kategori->delete();
+            $post = Post::findOrFail($id);
 
+            if ($post->user_id !== Auth::id()) {
+                return redirect()->back()->with('error', 'Bu postu silme yetkiniz yok.');
+            }
 
-        return redirect()->route('panel.user.showProfilePage');
+            foreach ($post->images as $img) {
+                Storage::disk('public')->delete($img->image_url);
+                $img->delete();
+            }
+
+            $post->delete();
+
+            return redirect()->route('panel.user.showProfilePage')->with('success', 'Post silindi.');
         }
 
 

@@ -1,123 +1,115 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="tr">
 <head>
-
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> @yield('title') </title>
+    <!-- Bootstrap 5 CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 
-    <title>@yield('title')</title>
+    <style>
+        /* Arka plan rengi */
+        body {
+            background-color: #1e1f22;
+            color: #e0e0e0;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
 
-    <!-- Bootstrap core CSS -->
-    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        /* Sol taraftaki dikey çizgi ayracı */
+        .nav-divider {
+            border-left: 1px solid #36373b;
+            height: 25px;
+        }
 
+        /* Menü link tasarımları */
+        .custom-nav .nav-link {
+            color: #a0a5ad;
+            font-size: 0.9rem;
+            padding: 0.5rem 0.9rem;
+            transition: color 0.2s ease;
+        }
 
-    <!-- Additional CSS Files -->
-    <link rel="stylesheet" href="{{asset('panel/assets/css/fontawesome.css')}}">
-    <link rel="stylesheet" href="{{asset('panel/assets/css/templatemo-cyborg-gaming.css')}}">
-    <link rel="stylesheet" href="{{asset('panel/assets/css/owl.css')}}">
-    <link rel="stylesheet" href="{{asset('panel/assets/css/animate.css')}}">
-    <link rel="stylesheet"href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
+        .custom-nav .nav-link:hover {
+            color: #ffffff;
+        }
 
+        /* Vurgulanan link (Admin Paneline Git) */
+        .custom-nav .nav-link.active-bold {
+            color: #ffffff;
+            font-weight: 700;
+        }
 
-    <style> @yield('headcss') </style>
+        /* Çıkış Yap Butonu */
+        .btn-outline-logout {
+            color: #ff4d4d;
+            border: 1px solid #8b2020;
+            background-color: transparent;
+            font-size: 0.85rem;
+            padding: 0.375rem 0.85rem;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
 
+        .btn-outline-logout:hover {
+            background-color: #8b2020;
+            color: #ffffff;
+            border-color: #8b2020;
+        }
+
+        /* Sayfa Ortasındaki Yuvarlatılmış Koyu Kutu */
+        .content-card {
+            background-color: #2b2d31;
+            border-radius: 16px;
+            min-height: 120px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+    </style>
 </head>
-
 <body>
 
-<!-- ***** Preloader Start ***** -->
-<div id="js-preloader" class="js-preloader">
-    <div class="preloader-inner">
-        <span class="dot"></span>
-        <div class="dots">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-    </div>
-</div>
-<!-- ***** Preloader End ***** -->
+<!-- Header / Navbar -->
+<header class="py-3">
+    <div class="container-fluid px-4 d-flex align-items-center justify-content-end">
 
-<!-- ***** Header Area Start ***** -->
-<header class="header-area header-sticky">
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <nav class="main-nav">
-                    <!-- ***** Logo Start ***** -->
-                    <a href="" class="logo">
-                        <img src="" alt="">
-                    </a>
-                    <!-- ***** Logo End ***** -->
+        <!-- Sol Dikey Ayraç -->
+        <div class="nav-divider me-3"></div>
 
-                    <!-- ***** Menu Start ***** -->
-                    <ul class="nav">
-                        <li><a href="{{route('panel.user.showMainPage')}}">Anasayfa</a></li>
-                        <li><a href="{{route('panel.user.showMyFollowingPage')}}"> Takip Ettiklerim </a> </li>
-                        <li><a href="{{route('panel.user.showFindUserPage')}}"> Kullanıcı Ara </a></li>
-                        <li><a href="{{route('panel.user.showCreatePost')}}">Gönderi Oluştur </a></li>
-                        <li><a href="{{route('panel.user.showProfilePage')}}">Profil </a></li>
-                        <li>
-                            @if(auth()->check() && auth()->user()->role == 1)
-                                <a href="{{ route('admin.dashboard') }}"
-                                   class="inline-flex items-center rounded bg-cyan text-white text-sm">
-                                    Admin paneline git
-                                </a>
-                            @endif
-                        </li>
-                        <li><form method="POST" action="{{ route('logout') }}">
-                                @csrf
-                                <button type="submit" class="btn btn-outline-danger btn-sm">
-                                    {{ __('Çıkış Yap') }}
-                                </button>
-                            </form></li>
-                    </ul>
-                    <a class='menu-trigger'>
-                        <span>Menu</span>
-                    </a>
-                    <!-- ***** Menu End ***** -->
-                </nav>
-            </div>
-        </div>
+        <!-- Menü Linkleri -->
+        <nav class="nav custom-nav align-items-center gap-1">
+            <a class="nav-link" href="{{route('panel.user.showMainPage')}}">Anasayfa</a>
+            <a class="nav-link" href="{{route('panel.user.showMyFollowingPage')}}">Takip Ettiklerim</a>
+            <a class="nav-link" href="{{route('panel.user.showFindUserPage')}}">Kullanıcı Ara</a>
+            <a class="nav-link" href="{{route('panel.user.showCreatePost')}}">Gönderi Oluştur</a>
+            <a class="nav-link" href="{{route('panel.user.showProfilePage')}}">Profil</a>
+
+            @if(auth()->check() && auth()->user()->role == 1)
+            <a class="nav-link active-bold me-2" href="{{ route('admin.dashboard') }}">Admin Paneline Git </a>
+            @endif
+
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit" class="btn btn-outline-danger btn-sm">
+                    {{ __('Çıkış Yap') }}
+                </button>
+            </form>
+
+        </nav>
+
     </div>
 </header>
-<!-- ***** Header Area End ***** -->
 
-<div class="container">
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="page-content">
+<!-- Ana İçerik Alanı (Kutu) -->
+<main class="container my-4">
+    <div class="content-card">
 
-                <!-- ***** Content Start ***** -->
+        @yield('content')
 
-                @yield('content')
-
-                <!-- ***** Content  End ***** -->
-            </div>
-        </div>
     </div>
-</div>
+</main>
 
-
-
-<!-- Scripts -->
-<!-- Bootstrap core JavaScript -->
-<script src="{{asset('panel/assets/vendor/jquery/jquery.min.js')}}"></script>
-<script src="{{asset('panel/assets/vendor/bootstrap/js/bootstrap.min.js')}}"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-<script src="{{asset('panel/assets/js/isotope.min.js')}}"></script>
-<script src="{{asset('panel/assets/js/owl-carousel.js')}}"></script>
-<script src="{{asset('panel/assets/js/tabs.js')}}"></script>
-<script src="{{asset('panel/assets/js/popup.js')}}"></script>
-<script src="{{asset('panel/assets/js/custom.js')}}"></script>
-
-
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>

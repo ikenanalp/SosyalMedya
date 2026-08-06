@@ -30,30 +30,20 @@ Post Oluştur
                 @endif
 
 
-                <form action="{{ route('panel.user.createPost') }}" method="POST">
+                <form action="{{ route('panel.user.createPost') }}" method="post" enctype="multipart/form-data">
                     @csrf
 
-                    <div class="mb-4">
-                    <textarea
-                        name="content"
-                        class="form-control form-control-lg bg-light border-0 rounded-3 @error('content') is-invalid @enderror"
-                        rows="4"
-                        placeholder="Ne düşünüyorsun?"
-                        style="resize: none;"
-                    >{{ old('content') }}</textarea>
+                    <textarea name="content" class="form-control mb-3" rows="3" placeholder="Ne düşünüyorsun?">{{ old('content') }}</textarea>
+                    @error('content')
+                    <div class="text-danger small mb-2">{{ $message }}</div>
+                    @enderror
 
-                        @error('content')
-                        <div class="invalid-feedback">
-                            {{ $message }}
-                        </div>
-                        @enderror
-                    </div>
+                    <input type="file" name="images[]" class="form-control mb-3" accept="image/*" multiple>
+                    @error('images.*')
+                    <div class="text-danger small mb-2">{{ $message }}</div>
+                    @enderror
 
-                    <div class="d-flex justify-content-end">
-                        <button type="submit" class="btn btn-primary btn-lg px-4 rounded-3 shadow-sm">
-                            Paylaş
-                        </button>
-                    </div>
+                    <button type="submit" class="btn btn-primary rounded-pill px-4">Paylaş</button>
                 </form>
             </div>
         </div>

@@ -17,7 +17,20 @@
                     </div>
                     <span class="fw-semibold text-dark">{{ $p->user->username }}</span>
                 </div>
-                <p class="card-text mb-0">{{ $p->content }}</p>
+
+                @if ($p->content)
+                    <p class="card-text mb-2">{{ $p->content }}</p>
+                @endif
+
+                @if ($p->images->count() > 0)
+                    <div class="row g-1">
+                        @foreach ($p->images as $img)
+                            <div class="{{ $p->images->count() === 1 ? 'col-12' : 'col-6' }}">
+                                <img src="{{ asset('storage/' . $img->image_url) }}" class="img-fluid rounded-3" alt="Gönderi resmi">
+                            </div>
+                        @endforeach
+                    </div>
+                @endif
             </div>
 
             @php

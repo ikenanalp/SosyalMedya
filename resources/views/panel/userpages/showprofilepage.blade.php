@@ -47,13 +47,25 @@
 
         <!-- Gönderiler -->
         <div class="d-flex flex-column gap-3">
-            @forelse ($posts as $post)
+            @forelse ($posts as $p)
                 <div class="card shadow-sm border-0 post-card">
                     <div class="card-body">
-                        <p class="card-text mb-2">{{ $post->content }}</p>
+                        @if ($p->content)
+                            <p class="card-text mb-2">{{ $p->content }}</p>
+                        @endif
+
+                        @if ($p->images->count() > 0)
+                            <div class="row g-1">
+                                @foreach ($p->images as $img)
+                                    <div class="{{ $p->images->count() === 1 ? 'col-12' : 'col-6' }}">
+                                        <img src="{{ asset('storage/' . $img->image_url) }}" class="img-fluid rounded-3" alt="Gönderi resmi">
+                                    </div>
+                                @endforeach
+                            </div>
+                        @endif
                         <div class="d-flex align-items-center text-muted">
-                            <i class="bi bi-clock me-1"></i>
-                            <small>{{ $post->created_at->locale('tr')->diffForHumans() }}</small>
+                            <i class="bi bi-clock me-1 mt-2"></i>
+                            <small class="mt-2">{{ $p->created_at->locale('tr')->diffForHumans() }}</small>
                         </div>
                     </div>
                 </div>

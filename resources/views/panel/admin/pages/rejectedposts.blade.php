@@ -38,7 +38,19 @@
                                 </div>
 
                                 <p class="card-text">
-                                    {{ $post->content }}
+                                @if ($post->content)
+                                    <p class="card-text mb-2">{{ $post->content }}</p>
+                                @endif
+
+                                @if ($post->images->count() > 0)
+                                    <div class="row g-1">
+                                        @foreach ($post->images as $img)
+                                            <div class="{{ $post->images->count() === 1 ? 'col-12' : 'col-6' }}">
+                                                <img src="{{ asset('storage/' . $img->image_url) }}" class="img-fluid rounded-3" alt="Gönderi resmi">
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                    @endif
                                 </p>
 
                                 <hr>
