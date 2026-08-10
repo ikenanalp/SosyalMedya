@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AdminFeedbackController;
+use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\FollowerController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\CommentController;
@@ -60,6 +62,17 @@ Route::middleware([
 
 //
 
+// Kullanıcı Şikayet Sistemis
+
+    Route::get('/feedback', [FeedbackController::class, 'index'])->name('feedback.index');
+    Route::get('/feedback/create', [FeedbackController::class, 'create'])->name('feedback.create');
+    Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.store');
+    Route::get('/feedback/{feedback}', [FeedbackController::class, 'show'])->name('feedback.show');
+
+//
+
+
+
     Route::middleware([
         'admin',
     ])->group(function () {
@@ -86,6 +99,19 @@ Route::middleware([
         Route::post('/users/{user}/ban', [UserBanController::class, 'banUsers'])->name('users.ban');
         Route::post('/users/{user}/unban', [UserBanController::class, 'unbanUsers'])->name('users.unban');
 //
+
+
+// Admin Feedback Sistemi
+
+            Route::get('/admin/feedback', [AdminFeedbackController::class, 'index'])->name('admin.feedback.index');
+            Route::get('/admin/feedback/{feedback}', [AdminFeedbackController::class, 'show'])->name('admin.feedback.show');
+            Route::patch('/admin/feedback/{feedback}/respond', [AdminFeedbackController::class, 'respond'])->name('admin.feedback.respond');
+
+
+//
+
+
+
 
     });
 

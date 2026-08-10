@@ -8,7 +8,7 @@
     <!-- Bootstrap 5 CSS CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-
+    <script src="https://cdn.tailwindcss.com"></script>
 
     <style>
         /* Arka plan rengi */
@@ -87,6 +87,7 @@
             <a class="nav-link" href="{{route('panel.user.showFindUserPage')}}">Kullanıcı Ara</a>
             <a class="nav-link" href="{{route('panel.user.showCreatePost')}}">Gönderi Oluştur</a>
             <a class="nav-link" href="{{route('panel.user.showProfilePage')}}">Profil</a>
+            <a class="nav-link" href="{{route('feedback.index')}}">Şikayet/Öneri</a>
 
             @if(auth()->check() && auth()->user()->role == 1)
             <a class="nav-link active-bold me-2" href="{{ route('admin.dashboard') }}">Admin Paneline Git </a>
@@ -115,5 +116,6 @@
 
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>

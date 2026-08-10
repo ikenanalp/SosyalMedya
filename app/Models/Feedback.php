@@ -10,7 +10,7 @@ class Feedback extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = 'feedback';
+    protected $table = 'feedbacks';
 
 
     public const TYPE_COMPLAINT = 1;   // şikayet
