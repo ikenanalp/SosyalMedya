@@ -117,6 +117,59 @@
                 </div>
             </div>
 
+            <!-- Bekleyen Feedbackler -->
+            <div class="col-12 col-sm-6 col-xl-4">
+                <div class="card border-0 shadow-sm rounded-3 h-100 border-start border-4 border-warning">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <p class="text-muted small fw-semibold text-uppercase mb-1">Bekleyenler Feedbackler</p>
+                                <h2 class="h3 fw-bold text-dark mb-0">{{ $stats['feedback_pending'] }}</h2>
+                            </div>
+                            <div class="bg-warning bg-opacity-10 text-warning p-3 rounded-circle">
+                                <i class="bi bi-hourglass-split fs-4"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Şikayetler -->
+            <div class="col-12 col-sm-6 col-xl-4">
+                <div class="card border-0 shadow-sm rounded-3 h-100 border-start border-4 border-success">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <p class="text-muted small fw-semibold text-uppercase mb-1">Şikayetler</p>
+                                <h2 class="h3 fw-bold text-dark mb-0">{{ $stats['feedback_complains'] }}</h2>
+                            </div>
+                            <div class="bg-success bg-opacity-10 text-success p-3 rounded-circle">
+                                <i class="bi bi-check-circle-fill fs-4"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Öneriler -->
+            <div class="col-12 col-sm-6 col-xl-4">
+                <div class="card border-0 shadow-sm rounded-3 h-100 border-start border-4 border-danger">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <p class="text-muted small fw-semibold text-uppercase mb-1">Öneriler</p>
+                                <h2 class="h3 fw-bold text-dark mb-0">{{ $stats['feedback_suggestions'] }}</h2>
+                            </div>
+                            <div class="bg-danger bg-opacity-10 text-danger p-3 rounded-circle">
+                                <i class="bi bi-x-circle-fill fs-4"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
+
+
 @endsection

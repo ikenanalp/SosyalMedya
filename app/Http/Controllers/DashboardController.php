@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Feedback;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Post;
@@ -18,6 +19,9 @@ class DashboardController extends Controller
             'pending_posts'  => Post::pending()->count(),
             'total_users'    => User::count(),
             'banned_users'   => User::where('is_banned', true)->count(),
+            'feedback_pending'      => Feedback::Pending()->count(),
+            'feedback_complains'    => Feedback::Complaints()->count(),
+            'feedback_suggestions'  => Feedback::Suggestions()->count(),
         ];
 
         return view('panel.admin.pages.adminmainpage', compact('stats'));
