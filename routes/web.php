@@ -8,6 +8,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\UserBanController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Middleware\admin;
 use Illuminate\Support\Facades\Route;
@@ -31,6 +32,17 @@ Route::middleware([
     Route::get('/profile', [PostController::class, 'showProfilePage'])->name('panel.user.showProfilePage');
     Route::get('/createpost', [PostController::class, 'showCreatePostPage'])->name('panel.user.showCreatePost');
     Route::get('/finduser', [UserController::class, 'showFindUserPage'])->name('panel.user.showFindUserPage');
+
+//
+
+// Profil Düzenleme (Avatar + Biyografi)
+// Not: '/profile/{user}' route'undan ÖNCE tanımlanmalı
+
+    Route::get('/profile/edit', [ProfileController::class, 'editProfile'])->name('panel.user.editProfile');
+    Route::post('/profile/edit', [ProfileController::class, 'updateProfile'])->name('panel.user.updateProfile');
+
+//
+
     Route::get('/profile/{user}', [UserController::class, 'userProfilePage'])->name('panel.user.showProfile'); //Aranan kullanıcı profili gösterme
     Route::get('/myfollowingpage', [PostController::class, 'showMyFollowingPage'])->name('panel.user.showMyFollowingPage');
 
@@ -102,9 +114,9 @@ Route::middleware([
 
 // Admin Feedback Sistemi
 
-            Route::get('/admin/feedback', [AdminFeedbackController::class, 'index'])->name('admin.feedback.index');
-            Route::get('/admin/feedback/{feedback}', [AdminFeedbackController::class, 'show'])->name('admin.feedback.show');
-            Route::patch('/admin/feedback/{feedback}/respond', [AdminFeedbackController::class, 'respond'])->name('admin.feedback.respond');
+        Route::get('/admin/feedback', [AdminFeedbackController::class, 'index'])->name('admin.feedback.index');
+        Route::get('/admin/feedback/{feedback}', [AdminFeedbackController::class, 'show'])->name('admin.feedback.show');
+        Route::patch('/admin/feedback/{feedback}/respond', [AdminFeedbackController::class, 'respond'])->name('admin.feedback.respond');
 
 //
 

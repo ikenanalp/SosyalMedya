@@ -34,34 +34,34 @@
         @forelse ($users as $user)
             <div class="user-card">
                 <div class="user-card-left">
-                    {{--   @include('panel.partials.avatar', ['user' => $user, 'size' => 'md']) --}}
-                      <span class="user-card-text">
+                    @include('panel.partials.avatar', ['user' => $user, 'size' => 'md'])
+                    <span class="user-card-text">
                           <span class="username">{{ $user->username }}</span>
                           @if (!empty($user->bio))
-                              <span class="user-card-bio">{{ $user->bio }}</span>
-                          @else
-                              <span class="user-handle">&#64;{{ $user->username }}</span>
-                          @endif
+                            <span class="user-card-bio">{{ $user->bio }}</span>
+                        @else
+                            <span class="user-handle">&#64;{{ $user->username }}</span>
+                        @endif
                       </span>
-                  </div>
-                  <a class="view-profile-btn" href="{{ route('panel.user.showProfile', $user->id) }}">
-                      Profili Gör
-                  </a>
-              </div>
-          @empty
-              <div class="empty-state">
-                  <i class="bi bi-person-x"></i>
-                  <p>
-                      @if($query)
-                          "{{ $query }}" ile eşleşen kullanıcı bulunamadı.
-                      @else
-                          Aramaya başlamak için yukarıya yazın.
-                      @endif
-                  </p>
-              </div>
-          @endforelse
+                </div>
+                <a class="view-profile-btn" href="{{ route('panel.user.showProfile', $user->id) }}">
+                    Profili Gör
+                </a>
+            </div>
+        @empty
+            <div class="empty-state">
+                <i class="bi bi-person-x"></i>
+                <p>
+                    @if($query)
+                        "{{ $query }}" ile eşleşen kullanıcı bulunamadı.
+                    @else
+                        Aramaya başlamak için yukarıya yazın.
+                    @endif
+                </p>
+            </div>
+        @endforelse
 
-          {{-- Sayfalama --}}
+        {{-- Sayfalama --}}
         <div class="pagination-wrap">
             {{ $users->appends(['query' => $query])->links() }}
         </div>

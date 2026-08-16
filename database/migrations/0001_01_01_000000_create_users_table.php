@@ -1,61 +1,141 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
+namespace App\Models;
 
-return new class extends Migration
+// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Database\Factories\UserFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Fortify\TwoFactorAuthenticatable;
+use Laravel\Jetstream\HasProfilePhoto;
+use Laravel\Sanctum\HasApiTokens;
+
+class User extends Authenticatable
 {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
-    {
-        Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedTinyInteger('role')->default(0)->comment('0-Kullanıcı 1-Admin');
-            $table->string('name');
-            $table->string('username')->unique();
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->boolean('is_banned')->default(false);
-            $table->string('ban_reason')->nullable();
-            $table->unsignedBigInteger('banned_by')->nullable();
-            $table->dateTime('banned_at')->nullable();
-            $table->rememberToken();
-            $table->foreignId('current_team_id')->nullable();
-            $table->string('profile_photo_path', 2048)->nullable();
-            $table->softDeletes();
-            $table->timestamps();
+    use HasApiTokens;
 
+    /** @use HasFactory<UserFactory> */
+    use HasFactory;
+    use HasProfilePhoto;
+    use Notifiable;
+    use TwoFactorAuthenticatable;
 
-            $table->foreign('banned_by')->references('id')->on('users')->onDelete('set null');
-        });
-
-        Schema::create('password_reset_tokens', function (Blueprint $table) {
-            $table->string('email')->primary();
-            $table->string('token');
-            $table->timestamp('created_at')->nullable();
-        });
-
-        Schema::create('sessions', function (Blueprint $table) {
-            $table->string('id')->primary();
-            $table->foreignId('user_id')->nullable()->index();
-            $table->string('ip_address', 45)->nullable();
-            $table->text('user_agent')->nullable();
-            $table->longText('payload');
-            $table->integer('last_activity')->index();
-        });
-    }
+    const ROLE_USER  = 0;
+    const ROLE_ADMIN = 1;
 
     /**
-     * Reverse the migrations.
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
      */
-    public function down(): void
+    protected $fillable = [
+        'name',
+        'username',
+        'email',
+        'password',
+        'role',
+        'is_banned',
+        'ban_reason',
+        'banned_by',
+        'banned_at',
+        'bio',
+        'profile_photo_path',
+    ];
+
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
+    protected $hidden = [
+        'password',
+        'remember_token',
+        'two_factor_recovery_codes',
+        'two_factor_secret',
+    ];
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array<int, string>
+     */
+    protected $appends = [
+        'profile_photo_url',
+    ];
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
     {
-        Schema::dropIfExists('users');
-        Schema::dropIfExists('password_reset_tokens');
-        Schema::dropIfExists('sessions');
+        return [
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
+        ];
     }
-};
+
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'banned_at'          => 'datetime',
+        'is_banned'          => 'boolean',
+    ];
+
+
+    // Kullanıcının gönderileri
+    public function posts()
+    {
+        return $this->hasMany(Post::class,'user_id','id');
+    }
+
+    // Kullanıcının yorumları
+    public function comments()
+    {
+        return $this->hasMany(Comment::class,'user_id','id');
+    }
+
+    // Kullanıcının beğenileri
+    public function likes()
+    {
+        return $this->hasMany(Like::class,'user_id','id');
+    }
+
+    // Bu kullanıcının takip ettiği kullanıcılar
+    public function following()
+    {
+        return $this->belongsToMany(
+            User::class,
+            'followers',
+            'follower_id',
+            'following_id'
+        )->withTimestamps();
+    }
+
+    // Bu kullanıcıyı takip eden kullanıcılar (takipçiler)
+    public function followers()
+    {
+        return $this->belongsToMany(
+            User::class,
+            'followers',
+            'following_id',
+            'follower_id'
+        )->withTimestamps();
+    }
+
+    // Claude Sistemi
+
+    public function isAdmin(): bool
+    {
+        return $this->role == self::ROLE_ADMIN;
+    }
+
+    public function bannedBy()
+    {
+        return $this->belongsTo(User::class, 'banned_by');
+    }
+
+
+
+}

@@ -11,7 +11,7 @@
 
         {{-- Profil Başlığı --}}
         <div class="profile-card">
-            {{--@include('panel.partials.avatar', ['user' => $user, 'size' => 'lg'])--}}
+            @include('panel.partials.avatar', ['user' => $user, 'size' => 'lg'])
 
             <div class="profile-info">
                 <h1 class="profile-name">{{ $user->username }}</h1>
@@ -94,7 +94,7 @@
                 <div class="comments">
                     @forelse ($p->comments()->latest()->with('user')->get() as $com)
                         <div class="comment">
-                            {{--@include('panel.partials.avatar', ['user' => $com->user, 'size' => 'sm'])--}}
+                            @include('panel.partials.avatar', ['user' => $com->user, 'size' => 'sm'])
                             <div class="comment-body">
                                 <span class="comment-username">{{ $com->user->username }}</span>
                                 <span class="comment-text">{{ $com->comment }}</span>

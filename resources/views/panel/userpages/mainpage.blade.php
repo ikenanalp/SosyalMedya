@@ -17,48 +17,48 @@
             <div class="post-card">
                 <div class="post-header">
                     <div class="post-user">
-                        {{--   @include('panel.partials.avatar', ['user' => $p->user, 'size' => 'md']) --}}
-                          <span class="post-user-text">
+                        @include('panel.partials.avatar', ['user' => $p->user, 'size' => 'md'])
+                        <span class="post-user-text">
                               <span class="username">{{ $p->user->username }}</span>
                               <span class="post-date">{{ $p->created_at->locale('tr')->diffForHumans() }}</span>
                           </span>
-                      </div>
+                    </div>
 
-                      @if ($p->content)
-                          <p class="post-content">{{ $p->content }}</p>
-                      @endif
-                  </div>
+                    @if ($p->content)
+                        <p class="post-content">{{ $p->content }}</p>
+                    @endif
+                </div>
 
-                  @if ($p->images->count() > 0)
-                      <div class="post-images {{ $p->images->count() > 1 ? 'multi' : '' }}">
-                          @foreach ($p->images as $img)
-                              <div class="post-image-wrap">
-                                  <img src="{{ asset('storage/' . $img->image_url) }}" alt="Gönderi resmi">
-                              </div>
-                          @endforeach
-                      </div>
-                  @endif
+                @if ($p->images->count() > 0)
+                    <div class="post-images {{ $p->images->count() > 1 ? 'multi' : '' }}">
+                        @foreach ($p->images as $img)
+                            <div class="post-image-wrap">
+                                <img src="{{ asset('storage/' . $img->image_url) }}" alt="Gönderi resmi">
+                            </div>
+                        @endforeach
+                    </div>
+                @endif
 
-                  @php
-                      $likeCount = $p->likes()->count();
-                      $isLiked = $p->likes()->where('user_id', auth()->id())->exists();
-                  @endphp
+                @php
+                    $likeCount = $p->likes()->count();
+                    $isLiked = $p->likes()->where('user_id', auth()->id())->exists();
+                @endphp
 
-                  <div class="post-actions">
-                      <form action="{{ route('user.likeSystem', $p->id) }}" method="post" class="like-form">
-                          @csrf
-                          <button type="submit" class="like-btn {{ $isLiked ? 'liked' : '' }}" aria-label="Beğen">
-                              <i class="bi {{ $isLiked ? 'bi-heart-fill' : 'bi-heart' }}"></i>
-                          </button>
-                          <span class="like-count">{{ $likeCount }} beğeni</span>
-                      </form>
-                  </div>
+                <div class="post-actions">
+                    <form action="{{ route('user.likeSystem', $p->id) }}" method="post" class="like-form">
+                        @csrf
+                        <button type="submit" class="like-btn {{ $isLiked ? 'liked' : '' }}" aria-label="Beğen">
+                            <i class="bi {{ $isLiked ? 'bi-heart-fill' : 'bi-heart' }}"></i>
+                        </button>
+                        <span class="like-count">{{ $likeCount }} beğeni</span>
+                    </form>
+                </div>
 
-                  {{-- Yorumlar --}}
+                {{-- Yorumlar --}}
                 <div class="comments">
                     @forelse($p->comments()->latest()->with('user')->get() as $com)
                         <div class="comment">
-                            {{--  @include('panel.partials.avatar', ['user' => $com->user, 'size' => 'sm'])  --}}
+                            @include('panel.partials.avatar', ['user' => $com->user, 'size' => 'sm'])
                             <div class="comment-body">
                                 <span class="comment-username">{{ $com->user->username }}</span>
                                 <span class="comment-text">{{ $com->comment }}</span>
