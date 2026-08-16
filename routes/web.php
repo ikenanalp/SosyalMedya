@@ -71,8 +71,6 @@ Route::middleware([
 
 //
 
-
-
     Route::middleware([
         'admin',
     ])->group(function () {
@@ -98,6 +96,7 @@ Route::middleware([
         Route::get('/users', [UserBanController::class, 'index'])->name('users.index');
         Route::post('/users/{user}/ban', [UserBanController::class, 'banUsers'])->name('users.ban');
         Route::post('/users/{user}/unban', [UserBanController::class, 'unbanUsers'])->name('users.unban');
+
 //
 
 
@@ -106,7 +105,6 @@ Route::middleware([
             Route::get('/admin/feedback', [AdminFeedbackController::class, 'index'])->name('admin.feedback.index');
             Route::get('/admin/feedback/{feedback}', [AdminFeedbackController::class, 'show'])->name('admin.feedback.show');
             Route::patch('/admin/feedback/{feedback}/respond', [AdminFeedbackController::class, 'respond'])->name('admin.feedback.respond');
-
 
 //
 
