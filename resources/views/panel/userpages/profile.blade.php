@@ -23,8 +23,8 @@
                 @endif
 
                 <div class="profile-stats">
-                    <span><strong>{{ $followersCount }}</strong> Takipçi</span>
-                    <span><strong>{{ $followingCount }}</strong> Takip</span>
+                    <a href="{{ route('panel.user.followers', $user->id) }}"><strong>{{ $followersCount }}</strong> Takipçi</a>
+                    <a href="{{ route('panel.user.following', $user->id) }}"><strong>{{ $followingCount }}</strong> Takip</a>
                 </div>
 
                 @if (auth()->check() && auth()->id() !== $user->id)

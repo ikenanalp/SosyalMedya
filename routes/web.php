@@ -36,7 +36,8 @@ Route::middleware([
 //
 
 // Profil Düzenleme (Avatar + Biyografi)
-// Not: '/profile/{user}' route'undan ÖNCE tanımlanmalı
+// Not: '/profile/{user}' route'undan ÖNCE tanımlanmalı, yoksa Laravel 'edit' kelimesini
+// bir kullanıcı id/username'i sanıp o route'a yönlendirmeye çalışır.
 
     Route::get('/profile/edit', [ProfileController::class, 'editProfile'])->name('panel.user.editProfile');
     Route::post('/profile/edit', [ProfileController::class, 'updateProfile'])->name('panel.user.updateProfile');
@@ -44,6 +45,8 @@ Route::middleware([
 //
 
     Route::get('/profile/{user}', [UserController::class, 'userProfilePage'])->name('panel.user.showProfile'); //Aranan kullanıcı profili gösterme
+    Route::get('/profile/{user}/followers', [UserController::class, 'followersList'])->name('panel.user.followers');
+    Route::get('/profile/{user}/following', [UserController::class, 'followingList'])->name('panel.user.following');
     Route::get('/myfollowingpage', [PostController::class, 'showMyFollowingPage'])->name('panel.user.showMyFollowingPage');
 
 //
