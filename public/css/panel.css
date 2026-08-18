@@ -386,6 +386,35 @@ a:hover { color: var(--sm-accent); text-decoration: underline; text-underline-of
     overflow-wrap: break-word;
 }
 
+.comment-image {
+    display: block;
+    margin-top: 8px;
+    max-width: 220px;
+    width: 100%;
+    border-radius: var(--sm-radius);
+    border: 1px solid var(--sm-line);
+    filter: sepia(.07) saturate(.94) contrast(1.02);
+}
+
+.comment-attach-label {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    flex: 0 0 auto;
+    border: 1px solid var(--sm-line);
+    border-radius: var(--sm-radius);
+    color: var(--sm-text-muted);
+    font-size: 16px;
+    cursor: pointer;
+    transition: color .15s ease, border-color .15s ease;
+}
+.comment-attach-label:hover,
+.comment-attach-label.has-file { color: var(--sm-accent); border-color: var(--sm-accent); }
+.comment-attach-input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+
 .comment-delete-form { flex: 0 0 auto; }
 
 .comment-delete-btn {

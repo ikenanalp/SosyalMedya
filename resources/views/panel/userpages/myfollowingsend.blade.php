@@ -19,7 +19,7 @@
                     <div class="post-user">
                         @include('panel.partials.avatar', ['user' => $p->user, 'size' => 'md'])
                         <span class="post-user-text">
-                               <span class="username">{{ $p->user->username }}</span>
+                               <a href="{{ route('panel.user.showProfile', $p->user->id) }}" class="username">{{ $p->user->username }}</a>
                                <span class="post-date">{{ $p->created_at->locale('tr')->diffForHumans() }}</span>
                            </span>
                     </div>
@@ -60,8 +60,13 @@
                         <div class="comment">
                             @include('panel.partials.avatar', ['user' => $com->user, 'size' => 'sm'])
                             <div class="comment-body">
-                                <span class="comment-username">{{ $com->user->username }}</span>
-                                <span class="comment-text">{{ $com->comment }}</span>
+                                <a href="{{ route('panel.user.showProfile', $com->user->id) }}" class="comment-username">{{ $com->user->username }}</a>
+                                @if ($com->comment)
+                                    <span class="comment-text">{{ $com->comment }}</span>
+                                @endif
+                                @if ($com->image)
+                                    <img src="{{ asset('storage/' . $com->image) }}" alt="Yorum resmi" class="comment-image">
+                                @endif
                             </div>
                             @if (auth()->id() === $com->user_id)
                                 <form action="{{ route('user.deleteComment', $com->id) }}" method="post"
@@ -79,9 +84,14 @@
                 </div>
 
                 {{-- Yorum ekleme formu --}}
-                <form action="{{ route('user.createComment', $p->id) }}" method="post" class="comment-form">
+                <form action="{{ route('user.createComment', $p->id) }}" method="post" class="comment-form" enctype="multipart/form-data">
                     @csrf
-                    <input type="text" name="comment" placeholder="Bir yorum yazınız..." class="comment-input">
+                    <label class="comment-attach-label">
+                        <i class="bi bi-image"></i>
+                        <input type="file" name="image" class="comment-attach-input" accept="image/*"
+                               onchange="this.closest('.comment-attach-label').classList.toggle('has-file', this.files.length>0)">
+                    </label>
+                    <input type="text" name="comment" placeholder="Bir yorum yazınız..." class="comment-input" required>
                     <button type="submit" class="comment-submit">Gönder</button>
                 </form>
             </div>

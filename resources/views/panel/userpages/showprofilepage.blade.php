@@ -33,8 +33,9 @@
                 @endphp
 
                 <div class="profile-stats">
-                    <span><strong>{{ $followersCount }}</strong> Takipçi</span>
-                    <span><strong>{{ $followingCount }}</strong> Takip</span>
+                    <span><strong>{{ $posts->total() }}</strong> Gönderi</span>
+                    <a href="{{ route('panel.user.followers', $user->id) }}"><strong>{{ $followersCount }}</strong> Takipçi</a>
+                    <a href="{{ route('panel.user.following', $user->id) }}"><strong>{{ $followingCount }}</strong> Takip</a>
                 </div>
 
                 @if (auth()->id() !== $user->id)
@@ -96,8 +97,13 @@
                         <div class="comment">
                             @include('panel.partials.avatar', ['user' => $com->user, 'size' => 'sm'])
                             <div class="comment-body">
-                                <span class="comment-username">{{ $com->user->username }}</span>
-                                <span class="comment-text">{{ $com->comment }}</span>
+                                <a href="{{ route('panel.user.showProfile', $com->user->id) }}" class="comment-username">{{ $com->user->username }}</a>
+                                @if ($com->comment)
+                                    <span class="comment-text">{{ $com->comment }}</span>
+                                @endif
+                                @if ($com->image)
+                                    <img src="{{ asset('storage/' . $com->image) }}" alt="Yorum resmi" class="comment-image">
+                                @endif
                             </div>
                             @if (auth()->id() === $com->user_id)
                                 <form action="{{ route('user.deleteComment', $com->id) }}" method="post"
@@ -115,9 +121,14 @@
                 </div>
 
                 {{-- Yorum ekleme --}}
-                <form action="{{ route('user.createComment', $p->id) }}" method="post" class="comment-form">
+                <form action="{{ route('user.createComment', $p->id) }}" method="post" class="comment-form" enctype="multipart/form-data">
                     @csrf
-                    <input type="text" name="comment" placeholder="Bir yorum yazınız..." class="comment-input" required>
+                    <label class="comment-attach-label">
+                        <i class="bi bi-image"></i>
+                        <input type="file" name="image" class="comment-attach-input" accept="image/*"
+                               onchange="this.closest('.comment-attach-label').classList.toggle('has-file', this.files.length>0)">
+                    </label>
+                        <input type="text" name="comment" placeholder="Bir yorum yazınız..." class="comment-input" required>
                     <button type="submit" class="comment-submit">Gönder</button>
                 </form>
             </div>
