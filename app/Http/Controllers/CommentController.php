@@ -23,13 +23,19 @@ class CommentController extends Controller
             'image.max' => 'Resim boyutu en fazla 4 MB olabilir.',
         ]);
 
+        $validator->after(function ($validator) use ($request) {
+            if (trim((string) $request->input('comment')) === '') {
+                $validator->errors()->add('comment', 'Yorum boş olamaz.');
+            }
+        });
+
         $validator->validate();
 
         $comment = new Comment();
 
         $comment->user_id = Auth::id();
         $comment->post_id = $id;
-        $comment->comment = $request->comment;
+        $comment->comment = trim((string) $request->comment);
 
         if ($request->hasFile('image')) {
             $comment->image = $request->file('image')->store('comments', 'public');

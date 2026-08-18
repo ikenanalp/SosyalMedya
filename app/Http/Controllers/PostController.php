@@ -31,12 +31,18 @@ class PostController extends Controller
 
         $validator->after(function ($validator) use ($request) {
 
-            if (!$request->filled('content') && !$request->hasFile('images')) {
+            $content = trim((string) $request->input('content'));
+
+            if ($content === '' && !$request->hasFile('images')) {
                 $validator->errors()->add('content', 'İçerik veya en az bir resim eklemelisiniz.');
             }
 
-            if ($request->hasFile('images') && !$request->filled('content')) {
+            if ($request->hasFile('images') && $content === '') {
                 $validator->errors()->add('content', 'Resim yüklediğinizde içerik girmek zorundasınız.');
+            }
+
+            if ($content !== '' && mb_strlen($content) < 3) {
+                $validator->errors()->add('content', 'İçerik en az 3 karakter olmalıdır.');
             }
         });
 
@@ -44,7 +50,7 @@ class PostController extends Controller
 
         $post = new Post();
         $post->user_id = Auth::id();
-        $post->content = $request->content;
+        $post->content = trim((string) $request->content) ?: null;
         $post->status = 0;
         $post->save();
 
@@ -61,25 +67,25 @@ class PostController extends Controller
         }
 
         return redirect()->route('panel.user.showCreatePost')->with(['success'=>'Paylaşımınız başarıyla eklendi']);
+    }
+
+    public function deletePost($id){
+
+        $post = Post::findOrFail($id);
+
+        if ($post->user_id !== Auth::id()) {
+            return redirect()->back()->with('error', 'Bu postu silme yetkiniz yok.');
         }
 
-        public function deletePost($id){
-
-            $post = Post::findOrFail($id);
-
-            if ($post->user_id !== Auth::id()) {
-                return redirect()->back()->with('error', 'Bu postu silme yetkiniz yok.');
-            }
-
-            foreach ($post->images as $img) {
-                Storage::disk('public')->delete($img->image_url);
-                $img->delete();
-            }
-
-            $post->delete();
-
-            return redirect()->route('panel.user.showProfilePage')->with('success', 'Post silindi.');
+        foreach ($post->images as $img) {
+            Storage::disk('public')->delete($img->image_url);
+            $img->delete();
         }
+
+        $post->delete();
+
+        return redirect()->route('panel.user.showProfilePage')->with('success', 'Post silindi.');
+    }
 
 
     public function showProfilePage(){
