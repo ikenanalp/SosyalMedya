@@ -14,13 +14,15 @@ class CommentController extends Controller
 
         $validator = Validator::make($request->all(), [
             'comment' => 'required|string|max:300',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:4096',
+            'images' => 'nullable|array|max:5',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:4096',
         ], [
             'comment.required' => 'Yorum boş olamaz.',
             'comment.max' => 'Yorum en fazla 300 karakter olabilir.',
-            'image.image' => 'Yalnızca resim dosyası yükleyebilirsiniz.',
-            'image.mimes' => 'İzin verilen formatlar: jpeg, png, jpg, gif.',
-            'image.max' => 'Resim boyutu en fazla 4 MB olabilir.',
+            'images.max' => 'En fazla 5 resim ekleyebilirsiniz.',
+            'images.*.image' => 'Yalnızca resim dosyası yükleyebilirsiniz.',
+            'images.*.mimes' => 'İzin verilen formatlar: jpeg, png, jpg, gif.',
+            'images.*.max' => 'Her resim en fazla 4 MB olabilir.',
         ]);
 
         $validator->after(function ($validator) use ($request) {
@@ -36,12 +38,18 @@ class CommentController extends Controller
         $comment->user_id = Auth::id();
         $comment->post_id = $id;
         $comment->comment = trim((string) $request->comment);
-
-        if ($request->hasFile('image')) {
-            $comment->image = $request->file('image')->store('comments', 'public');
-        }
-
         $comment->save();
+
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $index => $image) {
+                $path = $image->store('comments', 'public');
+
+                $comment->images()->create([
+                    'image_url' => $path,
+                    'position' => $index,
+                ]);
+            }
+        }
 
         return redirect()->back()->with('success', 'Yorumunuz eklendi.');
     }
@@ -54,8 +62,9 @@ class CommentController extends Controller
             return redirect()->back()->with('error', 'Bu yorumunu silemezsiniz.');
         }
 
-        if ($comment->image) {
-            Storage::disk('public')->delete($comment->image);
+        foreach ($comment->images as $img) {
+            Storage::disk('public')->delete($img->image_url);
+            $img->delete();
         }
 
         $comment->delete();

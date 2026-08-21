@@ -24,4 +24,9 @@ class Comment extends Model
         return $this->belongsTo(Post::class,'post_id','id');
     }
 
+    public function images()
+    {
+        return $this->hasMany(CommentImage::class, 'comment_id', 'id')->orderBy('position');
+    }
+
 }

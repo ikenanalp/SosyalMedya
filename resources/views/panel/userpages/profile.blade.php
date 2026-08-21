@@ -94,7 +94,7 @@
 
                 {{-- Yorumlar --}}
                 <div class="comments">
-                    @forelse ($p->comments()->latest()->with('user')->get() as $com)
+                    @forelse ($p->comments()->latest()->with(['user', 'images'])->get() as $com)
                         <div class="comment">
                             @include('panel.partials.avatar', ['user' => $com->user, 'size' => 'sm'])
                             <div class="comment-body">
@@ -102,8 +102,12 @@
                                 @if ($com->comment)
                                     <span class="comment-text">{{ $com->comment }}</span>
                                 @endif
-                                @if ($com->image)
-                                    <img src="{{ asset('storage/' . $com->image) }}" alt="Yorum resmi" class="comment-image">
+                                @if ($com->images->count() > 0)
+                                    <div class="comment-images {{ $com->images->count() > 1 ? 'multi' : '' }}">
+                                        @foreach ($com->images as $img)
+                                            <img src="{{ asset('storage/' . $img->image_url) }}" alt="Yorum resmi">
+                                        @endforeach
+                                    </div>
                                 @endif
                             </div>
                             @if (auth()->id() === $com->user_id)
@@ -126,7 +130,7 @@
                     @csrf
                     <label class="comment-attach-label">
                         <i class="bi bi-image"></i>
-                        <input type="file" name="image" class="comment-attach-input" accept="image/*"
+                        <input type="file" name="images[]" class="comment-attach-input" accept="image/*" multiple
                                onchange="this.closest('.comment-attach-label').classList.toggle('has-file', this.files.length>0)">
                     </label>
                     <input type="text" name="comment" placeholder="Bir yorum yazınız..." class="comment-input" required>
