@@ -10,7 +10,6 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Middleware\admin;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -36,8 +35,6 @@ Route::middleware([
 //
 
 // Profil Düzenleme (Avatar + Biyografi)
-// Not: '/profile/{user}' route'undan ÖNCE tanımlanmalı, yoksa Laravel 'edit' kelimesini
-// bir kullanıcı id/username'i sanıp o route'a yönlendirmeye çalışır.
 
     Route::get('/profile/edit', [ProfileController::class, 'editProfile'])->name('panel.user.editProfile');
     Route::post('/profile/edit', [ProfileController::class, 'updateProfile'])->name('panel.user.updateProfile');
