@@ -1,95 +1,63 @@
-@extends('panel.admin.layouts.app ')
+@extends('panel.admin.layouts.app')
+
+@section('title', 'Kullanıcılar')
+@section('page-title', 'Kullanıcılar')
+@section('page-subtitle', 'Kural ihlali yapan kullanıcıları banlayabilir, banı kaldırabilirsiniz.')
 
 @section('content')
-    <div class="container py-5">
 
-        <div class="card bg-dark text-white shadow-lg border-secondary">
-
-            <div class="card-header border-secondary">
-                <h2 class="mb-0">Kullanıcılar</h2>
-            </div>
-
-            <div class="card-body">
-
-                @if(session('success'))
-                    <div class="alert alert-success">
-                        {{ session('success') }}
-                    </div>
-                @endif
-
-                @foreach($users as $user)
-
-                    <div class="card bg-secondary bg-opacity-25 border-secondary text-white mb-3">
-                        <div class="card-body">
-
-                            <div class="d-flex justify-content-between align-items-center flex-wrap">
-
-                                <div>
-                                    <h5 class="mb-1">{{ $user->username }}</h5>
-                                    <p class="mb-2 text-light">{{ $user->email }}</p>
-
-                                    @if($user->is_banned)
-                                        <span class="badge bg-danger">
-                                        Banlı
-                                    </span>
-                                        <p class="mt-2 mb-0">
-                                            <strong>Ban Sebebi:</strong>
-                                            {{ $user->ban_reason }}
-                                        </p>
-                                    @endif
-                                </div>
-
-                                <div class="mt-3 mt-md-0">
-
-                                    @if(! $user->is_banned)
-
-                                        <form action="{{ route('users.ban', $user) }}" method="POST">
-                                            @csrf
-
-                                            <div class="input-group">
-                                                <input
-                                                    type="text"
-                                                    name="ban_reason"
-                                                    class="form-control bg-dark text-white border-secondary"
-                                                    placeholder="Ban sebebi"
-                                                    required
-                                                >
-
-                                                <button class="btn btn-danger">
-                                                    Banla
-                                                </button>
-                                            </div>
-
-                                        </form>
-
-                                    @else
-
-                                        <form action="{{ route('users.unban', $user) }}" method="POST">
-                                            @csrf
-
-                                            <button class="btn btn-success">
-                                                Banı Kaldır
-                                            </button>
-
-                                        </form>
-
-                                    @endif
-
-                                </div>
-
-                            </div>
-
-                        </div>
-                    </div>
-
-                @endforeach
-
-                <div class="d-flex justify-content-center mt-4">
-                    {{ $users->links() }}
-                </div>
-
-            </div>
+    @if (session('success'))
+        <div class="alert-a alert-a--success">
+            <span>{{ session('success') }}</span>
+            <button type="button" class="alert-a__close" data-dismiss="alert">&times;</button>
         </div>
+    @endif
 
+    @if (session('error'))
+        <div class="alert-a alert-a--danger">
+            <span>{{ session('error') }}</span>
+            <button type="button" class="alert-a__close" data-dismiss="alert">&times;</button>
+        </div>
+    @endif
+
+    <div class="a-card">
+        <div class="user-list">
+            @foreach ($users as $user)
+                <div class="user-row">
+                    <div class="user-row__info">
+                        <div class="user-row__name">
+                            {{ $user->username }}
+                            @if ($user->is_banned)
+                                <span class="badge-pill badge-pill--banned">Banlı</span>
+                            @endif
+                        </div>
+                        <div class="user-row__email">{{ $user->email }}</div>
+                        @if ($user->is_banned && $user->ban_reason)
+                            <div class="user-row__reason"><strong>Ban Sebebi:</strong> {{ $user->ban_reason }}</div>
+                        @endif
+                    </div>
+
+                    <div class="user-row__actions">
+                        @if (! $user->is_banned)
+                            <form action="{{ route('users.ban', $user) }}" method="POST" class="ban-form">
+                                @csrf
+                                <input type="text" name="ban_reason" placeholder="Ban sebebi" required>
+                                <button type="submit" class="btn-a btn-a--danger btn-a--sm">Banla</button>
+                            </form>
+                        @else
+                            <form action="{{ route('users.unban', $user) }}" method="POST">
+                                @csrf
+                                <button type="submit" class="btn-a btn-a--success btn-a--sm">Banı Kaldır</button>
+                            </form>
+                        @endif
+                    </div>
+                </div>
+            @endforeach
+        </div>
     </div>
+
+    <div class="pagination-wrap">
+        {{ $users->links() }}
+    </div>
+
 @endsection

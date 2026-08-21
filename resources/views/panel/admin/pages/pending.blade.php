@@ -1,85 +1,60 @@
 @extends('panel.admin.layouts.app')
 
-@section('title')
-
-@endsection
+@section('title', 'Post Onaylama')
+@section('page-title', 'Onay Bekleyen Paylaşımlar')
 
 @section('content')
-    <div class="container mt-4">
 
-        <h3 class="mb-4">Onay Bekleyen Paylaşımlar</h3>
-
-        @forelse($posts as $post)
-            <div class="card shadow-sm border-0 mb-4">
-                <div class="card-body">
-
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <div>
-                            <h5 class="card-title mb-0">
-                                {{ ucfirst($post->user->username) }}
-                            </h5>
-                            <small class="text-muted">
-                                {{ $post->created_at->diffForHumans() }}
-                            </small>
-                        </div>
-
-                        <span class="badge bg-warning text-dark">
-                        Onay Bekliyor
-                    </span>
+    @forelse ($posts as $post)
+        <div class="review-card">
+            <div class="review-card__head">
+                <div class="review-user">
+                    <div class="review-user__avatar">{{ strtoupper(substr($post->user->username, 0, 1)) }}</div>
+                    <div>
+                        <div class="review-user__name">{{ $post->user->username }}</div>
+                        <div class="review-user__time">{{ $post->created_at->diffForHumans() }}</div>
                     </div>
-
-                    <p class="card-text">
-                    @if ($post->content)
-                        <p class="card-text mb-2">{{ $post->content }}</p>
-                    @endif
-
-                    @if ($post->images->count() > 0)
-                        <div class="row g-1">
-                            @foreach ($post->images as $img)
-                                <div class="{{ $post->images->count() === 1 ? 'col-12' : 'col-6' }}">
-                                    <img src="{{ asset('storage/' . $img->image_url) }}" class="img-fluid rounded-3" alt="Gönderi resmi">
-                                </div>
-                            @endforeach
-                        </div>
-                        @endif
-                    </p>
-
-                    <hr>
-
-                    <div class="d-flex gap-2">
-
-                        <form action="{{ route('posts.approve', $post) }}" method="POST">
-                            @csrf
-                            <button type="submit" class="btn btn-success">
-                                <i class="bi bi-check-circle"></i>
-                                Onayla
-                            </button>
-                        </form>
-
-                        <form action="{{ route('posts.reject', $post) }}" method="POST">
-                            @csrf
-                            <button type="submit" class="btn btn-danger">
-                                <i class="bi bi-x-circle"></i>
-                                Reddet
-                            </button>
-                        </form>
-
-                    </div>
-
                 </div>
+                <span class="badge-pill badge-pill--pending"><i class="bi bi-hourglass-split"></i> Onay Bekliyor</span>
             </div>
 
-        @empty
+            @if ($post->content)
+                <p class="review-card__content">{{ $post->content }}</p>
+            @endif
 
-            <div class="alert alert-info text-center shadow-sm">
-                <h5 class="mb-1">Onay Bekleyen Post Yok</h5>
-                <p class="mb-0">Şu anda moderasyon bekleyen herhangi bir paylaşım bulunmuyor.</p>
+            @if ($post->images->count() > 0)
+                <div class="review-images {{ $post->images->count() > 1 ? 'multi' : '' }}">
+                    @foreach ($post->images as $img)
+                        <img src="{{ asset('storage/' . $img->image_url) }}" alt="Gönderi resmi">
+                    @endforeach
+                </div>
+            @endif
+
+            <div class="review-card__actions">
+                <form action="{{ route('posts.approve', $post) }}" method="POST">
+                    @csrf
+                    <button type="submit" class="btn-a btn-a--success">
+                        <i class="bi bi-check-circle"></i> Onayla
+                    </button>
+                </form>
+
+                <form action="{{ route('posts.reject', $post) }}" method="POST">
+                    @csrf
+                    <button type="submit" class="btn-a btn-a--danger">
+                        <i class="bi bi-x-circle"></i> Reddet
+                    </button>
+                </form>
             </div>
+        </div>
+    @empty
+        <div class="a-empty">
+            <i class="bi bi-inbox"></i>
+            <p>Şu anda moderasyon bekleyen herhangi bir paylaşım bulunmuyor.</p>
+        </div>
+    @endforelse
 
-        @endforelse
-
-    </div>
-
+    <div class="pagination-wrap">
         {{ $posts->links() }}
     </div>
+
 @endsection
