@@ -39,6 +39,8 @@ class User extends Authenticatable
         'ban_reason',
         'banned_by',
         'banned_at',
+        'bio',
+        'profile_photo_path',
     ];
 
     /**
