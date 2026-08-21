@@ -10,7 +10,13 @@
 
         {{-- Profil Kartı --}}
         <div class="profile-card">
-            @include('panel.partials.avatar', ['user' => $user, 'size' => 'lg'])
+            <span class="avatar avatar-lg">
+                    @if (!empty($user->profile_photo_path))
+                    <img src="{{ asset('storage/' . $user->profile_photo_path) }}" alt="{{ $user->username }}">
+                @else
+                    <span class="avatar-initial">{{ strtoupper(substr($user->username, 0, 1)) }}</span>
+                @endif
+                </span>
 
             <div class="profile-info">
                 <h1 class="profile-name">{{ $user->username }}</h1>
@@ -52,7 +58,13 @@
             <div class="post-card">
                 <div class="post-header">
                     <div class="post-user">
-                        @include('panel.partials.avatar', ['user' => $p->user, 'size' => 'md'])
+                        <span class="avatar">
+                    @if (!empty($p->user->profile_photo_path))
+                                <img src="{{ asset('storage/' . $p->user->profile_photo_path) }}" alt="{{ $p->user->username }}">
+                            @else
+                                <span class="avatar-initial">{{ strtoupper(substr($p->user->username, 0, 1)) }}</span>
+                            @endif
+                </span>
                         <span class="post-user-text">
                              <span class="username">{{ $p->user->username }}</span>
                              <span class="post-date">{{ $p->created_at->locale('tr')->diffForHumans() }}</span>
@@ -96,7 +108,13 @@
                 <div class="comments">
                     @forelse ($p->comments()->latest()->with(['user', 'images'])->get() as $com)
                         <div class="comment">
-                            @include('panel.partials.avatar', ['user' => $com->user, 'size' => 'sm'])
+                            <span class="avatar avatar-sm">
+                    @if (!empty($com->user->profile_photo_path))
+                                    <img src="{{ asset('storage/' . $com->user->profile_photo_path) }}" alt="{{ $com->user->username }}">
+                                @else
+                                    <span class="avatar-initial">{{ strtoupper(substr($com->user->username, 0, 1)) }}</span>
+                                @endif
+                </span>
                             <div class="comment-body">
                                 <a href="{{ route('panel.user.showProfile', $com->user->id) }}" class="comment-username">{{ $com->user->username }}</a>
                                 @if ($com->comment)

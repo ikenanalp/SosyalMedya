@@ -41,10 +41,11 @@ Route::middleware([
 
     Route::get('/profile/edit', [ProfileController::class, 'editProfile'])->name('panel.user.editProfile');
     Route::post('/profile/edit', [ProfileController::class, 'updateProfile'])->name('panel.user.updateProfile');
-
+    Route::post('/profile/avatar/{avatar}/use', [ProfileController::class, 'useAvatar'])->name('panel.user.useAvatar');
+    Route::delete('/profile/avatar/{avatar}', [ProfileController::class, 'deleteAvatar'])->name('panel.user.deleteAvatar');
 //
 
-        Route::get('/profile/{user}', [UserController::class, 'userProfilePage'])->name('panel.user.showProfile'); //Aranan kullanıcı profili gösterme
+    Route::get('/profile/{user}', [UserController::class, 'userProfilePage'])->name('panel.user.showProfile'); //Aranan kullanıcı profili gösterme
     Route::get('/profile/{user}/followers', [UserController::class, 'followersList'])->name('panel.user.followers');
     Route::get('/profile/{user}/following', [UserController::class, 'followingList'])->name('panel.user.following');
     Route::get('/myfollowingpage', [PostController::class, 'showMyFollowingPage'])->name('panel.user.showMyFollowingPage');

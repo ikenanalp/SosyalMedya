@@ -136,6 +136,9 @@ class User extends Authenticatable
         return $this->belongsTo(User::class, 'banned_by');
     }
 
-
+    public function avatars()
+    {
+        return $this->hasMany(UserAvatar::class, 'user_id', 'id')->orderBy('created_at', 'desc');
+    }
 
 }

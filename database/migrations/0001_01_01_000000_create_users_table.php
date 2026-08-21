@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedTinyInteger('role')->default(0)->comment('0-Kullanıcı 1-Admin');
             $table->string('name');
             $table->string('username')->unique();
+            $table->string('bio', 160)->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

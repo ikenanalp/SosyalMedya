@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\UserAvatar;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -49,17 +50,20 @@ class ProfileController extends Controller
             'avatar.max' => 'Resim boyutu en fazla 2MB olabilir.',
         ]);
 
-        // Yeni avatar yüklendiyse: eskisini sil, yenisini kaydet
+        // Yeni avatar yüklendiyse: eskisini SİLMEDEN geçmişe ekle, yenisini aktif yap
         if ($request->hasFile('avatar')) {
-            if ($user->profile_photo_path) {
-                Storage::disk('public')->delete($user->profile_photo_path);
-            }
+            $path = $request->file('avatar')->store('avatars', 'public');
 
-            $user->profile_photo_path = $request->file('avatar')->store('avatars', 'public');
+            $user->avatars()->create([
+                'image_url' => $path,
+                'position' => $user->avatars()->count(),
+            ]);
+
+            $user->profile_photo_path = $path;
         }
-        // Avatar kaldırma isteği geldiyse (yeni dosya yoksa)
-        elseif ($request->boolean('remove_avatar') && $user->profile_photo_path) {
-            Storage::disk('public')->delete($user->profile_photo_path);
+        // Avatar kaldırma isteği geldiyse (yeni dosya yoksa) — sadece aktif göstergeyi temizle,
+        // geçmiş fotoğraflar silinmez, kullanıcı istediğinde tekrar birini seçebilir.
+        elseif ($request->boolean('remove_avatar')) {
             $user->profile_photo_path = null;
         }
 
@@ -69,5 +73,44 @@ class ProfileController extends Controller
 
         return redirect()->route('panel.user.editProfile')
             ->with('success', 'Profiliniz başarıyla güncellendi.');
+    }
+
+    /**
+     * Geçmişteki bir avatarı tekrar aktif profil fotoğrafı yapar.
+     */
+    public function useAvatar(UserAvatar $avatar): RedirectResponse
+    {
+        if ($avatar->user_id !== Auth::id()) {
+            return redirect()->back()->with('error', 'Bu işlemi yapma yetkiniz yok.');
+        }
+
+        $user = Auth::user();
+        $user->profile_photo_path = $avatar->image_url;
+        $user->save();
+
+        return redirect()->route('panel.user.editProfile')
+            ->with('success', 'Profil fotoğrafınız güncellendi.');
+    }
+
+    /**
+     * Geçmişteki bir avatarı kalıcı olarak siler (şu an aktif olan hariç).
+     */
+    public function deleteAvatar(UserAvatar $avatar): RedirectResponse
+    {
+        $user = Auth::user();
+
+        if ($avatar->user_id !== $user->id) {
+            return redirect()->back()->with('error', 'Bu işlemi yapma yetkiniz yok.');
+        }
+
+        if ($user->profile_photo_path === $avatar->image_url) {
+            return redirect()->back()->with('error', 'Şu anda kullanılan avatarı silemezsiniz. Önce başka birini seçin.');
+        }
+
+        Storage::disk('public')->delete($avatar->image_url);
+        $avatar->delete();
+
+        return redirect()->route('panel.user.editProfile')
+            ->with('success', 'Avatar silindi.');
     }
 }

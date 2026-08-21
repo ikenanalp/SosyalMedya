@@ -247,6 +247,64 @@ a:hover { color: var(--sm-accent); text-decoration: underline; text-underline-of
 .avatar-lg { width: 84px; height: 84px; padding: 4px; background: var(--sm-surface); }
 .avatar-lg .avatar-initial { font-size: 34px; }
 
+/* ===== Avatar geçmişi galerisi ===== */
+.avatar-history-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
+    gap: 12px;
+}
+.avatar-history-item {
+    position: relative;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid transparent;
+}
+.avatar-history-item.is-current { border-color: var(--sm-accent); }
+.avatar-history-item img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.avatar-history-badge {
+    position: absolute;
+    inset: auto 0 0 0;
+    background: var(--sm-accent);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 600;
+    text-align: center;
+    padding: 2px 0;
+}
+.avatar-history-actions {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: rgba(20, 18, 14, .55);
+    opacity: 0;
+    transition: opacity .15s ease;
+}
+.avatar-history-item:hover .avatar-history-actions { opacity: 1; }
+.avatar-history-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border: none;
+    border-radius: 50%;
+    background: #fff;
+    color: var(--sm-accent);
+    cursor: pointer;
+    font-size: 13px;
+}
+.avatar-history-btn--danger { color: var(--sm-danger); }
+.avatar-history-btn:hover { filter: brightness(0.95); }
+
 /* ===== Gönderi ===== */
 .post-header { padding: 20px 22px 0; }
 

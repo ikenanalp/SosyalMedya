@@ -32,7 +32,13 @@
         @forelse ($users as $listedUser)
             <div class="user-card">
                 <div class="user-card-left">
-                    @include('panel.partials.avatar', ['user' => $listedUser, 'size' => 'md'])
+                    <span class="avatar">
+                    @if (!empty($listedUser->profile_photo_path))
+                            <img src="{{ asset('storage/' . $listedUser->profile_photo_path) }}" alt="{{ $listedUser->username }}">
+                        @else
+                            <span class="avatar-initial">{{ strtoupper(substr($listedUser->username, 0, 1)) }}</span>
+                        @endif
+                </span>
                     <span class="user-card-text">
                         <span class="username">{{ $listedUser->username }}</span>
                         @if (!empty($listedUser->bio))

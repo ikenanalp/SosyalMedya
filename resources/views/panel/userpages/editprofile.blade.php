@@ -47,7 +47,13 @@
                 <div class="field">
                     <label>Mevcut Fotoğraf</label>
                     <div style="display:flex; align-items:center; gap:16px;">
-                        @include('panel.partials.avatar', ['user' => $user, 'size' => 'lg'])
+                        <span class="avatar avatar-lg">
+                    @if (!empty($user->profile_photo_path))
+                                <img src="{{ asset('storage/' . $user->profile_photo_path) }}" alt="{{ $user->username }}">
+                            @else
+                                <span class="avatar-initial">{{ strtoupper(substr($user->username, 0, 1)) }}</span>
+                            @endif
+                </span>
 
                         @if ($user->profile_photo_path)
                             <label style="display:flex; align-items:center; gap:8px; font-size:14px; color:var(--sm-text-muted); cursor:pointer;">
@@ -80,6 +86,43 @@
                 <button type="submit" class="create-post-submit">Kaydet</button>
             </form>
         </div>
+
+        @if ($user->avatars->count() > 0)
+            <div class="form-card" style="margin-top: 20px;">
+                <h2 class="form-title" style="font-size: 18px;">Önceki Avatarlar</h2>
+                <p class="form-note">Geçmişte yüklediğin fotoğraflardan birini tekrar aktif yapabilir ya da kalıcı olarak silebilirsin.</p>
+
+                <div class="avatar-history-grid">
+                    @foreach ($user->avatars as $avatar)
+                        @php $isCurrent = $user->profile_photo_path === $avatar->image_url; @endphp
+                        <div class="avatar-history-item {{ $isCurrent ? 'is-current' : '' }}">
+                            <img src="{{ asset('storage/' . $avatar->image_url) }}" alt="Eski avatar">
+
+                            @if ($isCurrent)
+                                <span class="avatar-history-badge">Aktif</span>
+                            @else
+                                <div class="avatar-history-actions">
+                                    <form action="{{ route('panel.user.useAvatar', $avatar) }}" method="post">
+                                        @csrf
+                                        <button type="submit" class="avatar-history-btn" title="Bunu kullan">
+                                            <i class="bi bi-check-lg"></i>
+                                        </button>
+                                    </form>
+                                    <form action="{{ route('panel.user.deleteAvatar', $avatar) }}" method="post"
+                                          onsubmit="return confirm('Bu avatarı kalıcı olarak silmek istediğinize emin misiniz?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="avatar-history-btn avatar-history-btn--danger" title="Sil">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            @endif
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        @endif
 
     </div>
 
