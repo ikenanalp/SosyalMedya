@@ -31,7 +31,7 @@
             <form action="{{ route('panel.user.createPost') }}" method="post" enctype="multipart/form-data" class="create-post-form">
                 @csrf
 
-                <textarea name="content" class="post-textarea" rows="4" placeholder="Ne düşünüyorsun?">{{ old('content') }}</textarea>
+                <textarea name="content" class="post-textarea" rows="4" placeholder="Ne düşünüyorsun?" required>{{ old('content') }}</textarea>
                 @error('content')
                 <div class="field-error">{{ $message }}</div>
                 @enderror

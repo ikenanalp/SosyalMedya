@@ -51,8 +51,8 @@ Route::middleware([
 
 // Post Oluşturma ve Silme
 
-    Route::post('/createpost', [postController::class, 'createPost'])->name('panel.user.createPost');
-    Route::delete('/deletepost/{id}', [postController::class, 'deletePost'])->name('panel.user.deletePost');
+    Route::post('/createpost', [PostController::class, 'createPost'])->name('panel.user.createPost');
+    Route::delete('/deletepost/{id}', [PostController::class, 'deletePost'])->name('panel.user.deletePost');
 
 //
 
