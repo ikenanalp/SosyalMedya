@@ -63,6 +63,10 @@ img { max-width: 100%; display: block; }
 
 /* ===== Kenar çubuğu ===== */
 .sidebar {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
     background: var(--navy);
     color: #C7D0E0;
     padding: 28px 20px;
@@ -225,6 +229,10 @@ main { padding: 30px 34px 48px; max-width: 1180px; }
 .review-images { display: grid; grid-template-columns: 1fr; gap: 6px; margin: 12px 0 4px; }
 .review-images.multi { grid-template-columns: 1fr 1fr; }
 .review-images img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: contain; background: var(--bg); border-radius: var(--radius-sm); border: 1px solid var(--line); }
+/* Kartın tamamını kaplamasın diye boyut sınırlanır; çoklu resimde her kare
+   yeterince büyük görünsün diye tek resimden daha geniş bir sınır kullanılır */
+.review-images:not(.multi) { max-width: 260px; }
+.review-images.multi { max-width: 460px; }
 
 .review-card__meta {
     display: flex; align-items: center; justify-content: space-between;
@@ -368,7 +376,7 @@ a.list-table__row:hover { background: var(--bg); text-decoration: none; color: v
 /* ===== Duyarlı tasarım ===== */
 @media (max-width: 900px) {
     .layout { grid-template-columns: 1fr; }
-    .sidebar { flex-direction: row; align-items: center; overflow-x: auto; padding: 16px 18px; gap: 18px; }
+    .sidebar { flex-direction: row; align-items: center; overflow-x: auto; overflow-y: visible; height: auto; position: static; padding: 16px 18px; gap: 18px; }
     .sidebar nav, .sidebar-foot { display: none; }
     main { padding: 22px 18px 40px; }
     .stat-grid { grid-template-columns: 1fr 1fr; }
