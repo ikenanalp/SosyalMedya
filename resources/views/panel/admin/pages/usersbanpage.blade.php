@@ -24,17 +24,26 @@
         <div class="user-list">
             @foreach ($users as $user)
                 <div class="user-row">
-                    <div class="user-row__info">
-                        <div class="user-row__name">
-                            {{ $user->username }}
-                            @if ($user->is_banned)
-                                <span class="badge-pill badge-pill--banned">Banlı</span>
+                    <div class="user-row__left">
+                        <div class="user-row__avatar">
+                            @if (!empty($user->profile_photo_path))
+                                <img src="{{ asset('storage/' . $user->profile_photo_path) }}" alt="{{ $user->username }}">
+                            @else
+                                {{ strtoupper(substr($user->username, 0, 1)) }}
                             @endif
                         </div>
-                        <div class="user-row__email">{{ $user->email }}</div>
-                        @if ($user->is_banned && $user->ban_reason)
-                            <div class="user-row__reason"><strong>Ban Sebebi:</strong> {{ $user->ban_reason }}</div>
-                        @endif
+                        <div class="user-row__info">
+                            <div class="user-row__name">
+                                {{ $user->username }}
+                                @if ($user->is_banned)
+                                    <span class="badge-pill badge-pill--banned">Banlı</span>
+                                @endif
+                            </div>
+                            <div class="user-row__email">{{ $user->email }}</div>
+                            @if ($user->is_banned && $user->ban_reason)
+                                <div class="user-row__reason"><strong>Ban Sebebi:</strong> {{ $user->ban_reason }}</div>
+                            @endif
+                        </div>
                     </div>
 
                     <div class="user-row__actions">

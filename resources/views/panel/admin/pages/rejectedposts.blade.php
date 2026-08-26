@@ -16,7 +16,13 @@
         <div class="review-card">
             <div class="review-card__head">
                 <div class="review-user">
-                    <div class="review-user__avatar">{{ strtoupper(substr($post->user->username, 0, 1)) }}</div>
+                    <div class="review-user__avatar">
+                        @if (!empty($post->user->profile_photo_path))
+                            <img src="{{ asset('storage/' . $post->user->profile_photo_path) }}" alt="{{ $post->user->username }}">
+                        @else
+                            {{ strtoupper(substr($post->user->username, 0, 1)) }}
+                        @endif
+                    </div>
                     <div>
                         <div class="review-user__name">{{ $post->user->username }}</div>
                         <div class="review-user__time">{{ $post->created_at->diffForHumans() }}</div>
